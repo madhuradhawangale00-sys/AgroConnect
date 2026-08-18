@@ -72,9 +72,9 @@ export default function BuyerMarketplacePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 relative overflow-hidden">
-      {/* Farming background overlay */}
-      <div className="absolute inset-0 bg-[url('/resources/background2.jpeg')] bg-cover bg-center opacity-35 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/85 to-slate-950 pointer-events-none" />
+      {/* Subtle background overlay */}
+      <div className="absolute inset-0 bg-[url('/resources/background2.jpeg')] bg-cover bg-center opacity-10 pointer-events-none" />
+      <div className="absolute inset-0 bg-slate-950/60 pointer-events-none" />
       <Header />
 
       <main className="flex-1 container max-w-7xl mx-auto px-4 py-24">

@@ -167,26 +167,26 @@ export default function KYCPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 relative overflow-hidden">
-      {/* Farming background overlay */}
-      <div className="absolute inset-0 bg-[url('/resources/background6.jpeg')] bg-cover bg-center opacity-35 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-slate-950/85 to-slate-950 pointer-events-none" />
+      {/* Subtle background overlay */}
+      <div className="absolute inset-0 bg-[url('/resources/background6.jpeg')] bg-cover bg-center opacity-10 pointer-events-none" />
+      <div className="absolute inset-0 bg-slate-950/60 pointer-events-none" />
       <Header />
 
-      <main className="flex-1 container max-w-4xl mx-auto px-4 py-24">
+      <main className="flex-1 container max-w-4xl mx-auto px-4 py-24 relative z-10">
         <div className="flex items-center justify-between mb-8">
           <div>
             <Link
               href={(session?.user as any)?.role === "Buyer" ? "/bdashboard" : (session?.user as any)?.role === "Admin" ? "/admin/kyc" : "/fdashboard"}
-              className="inline-flex items-center text-sm text-emerald-400 hover:text-emerald-300 mb-2 transition-colors"
+              className="inline-flex items-center text-sm font-semibold text-emerald-400 hover:text-emerald-300 mb-2 transition-colors"
             >
               <ArrowLeft className="h-4 w-4 mr-1" /> Back to Dashboard
             </Link>
-            <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
-              <ShieldCheck className="h-8 w-8 text-emerald-400" />
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex items-center gap-3">
+              <ShieldCheck className="h-9 w-9 text-emerald-400" />
               KYC Identity Verification
             </h1>
-            <p className="text-slate-400 mt-1">
-              Verify your identity to gain verified badge and unlock full contract farming capabilities on AgroConnect.
+            <p className="text-slate-200 mt-2 text-base font-normal">
+              Verify your identity to gain a green badge and unlock full contract farming capabilities on AgroConnect.
             </p>
           </div>
 
@@ -195,15 +195,15 @@ export default function KYCPage() {
 
         {/* Status Callout Card */}
         {kycStatus === "Verified" && (
-          <Card className="bg-emerald-950/40 border-emerald-500/40 mb-8">
+          <Card className="bg-emerald-950/80 border-2 border-emerald-500 mb-8 shadow-xl">
             <CardContent className="pt-6 flex items-start gap-4">
-              <div className="p-3 bg-emerald-500/20 text-emerald-400 rounded-full">
+              <div className="p-3 bg-emerald-500/20 text-emerald-400 rounded-full shrink-0">
                 <FileCheck className="h-8 w-8" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-emerald-300">Your Identity is Verified!</h3>
-                <p className="text-sm text-emerald-200/80 mt-1">
-                  Your identity documents have been approved by the platform administration. Your listings and profile now display a green "KYC Verified" badge, giving buyers and sellers maximum trust.
+                <h3 className="text-lg font-bold text-emerald-200">Your Identity is Verified!</h3>
+                <p className="text-sm text-emerald-100 mt-1 leading-relaxed">
+                  Your identity documents have been approved by platform administration. Your produce listings and profile now display a green "KYC Verified" badge.
                 </p>
               </div>
             </CardContent>
@@ -211,15 +211,15 @@ export default function KYCPage() {
         )}
 
         {kycStatus === "Pending" && (
-          <Card className="bg-amber-950/40 border-amber-500/40 mb-8">
+          <Card className="bg-amber-950/80 border-2 border-amber-500 mb-8 shadow-xl">
             <CardContent className="pt-6 flex items-start gap-4">
-              <div className="p-3 bg-amber-500/20 text-amber-400 rounded-full">
+              <div className="p-3 bg-amber-500/20 text-amber-400 rounded-full shrink-0">
                 <Loader2 className="h-8 w-8 animate-spin" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-amber-300">Verification Under Review</h3>
-                <p className="text-sm text-amber-200/80 mt-1">
-                  Your uploaded ID and address proof documents have been submitted to the Admin Approval Queue. Verification usually takes a few hours. You can update your submission below if needed.
+                <h3 className="text-lg font-bold text-amber-200">Verification Under Review</h3>
+                <p className="text-sm text-amber-100 mt-1 leading-relaxed">
+                  Your uploaded ID and address proof documents have been submitted to the Admin Queue for verification. You can update your submission below if needed.
                 </p>
               </div>
             </CardContent>
@@ -227,19 +227,19 @@ export default function KYCPage() {
         )}
 
         {kycStatus === "Rejected" && (
-          <Card className="bg-red-950/40 border-red-500/40 mb-8">
+          <Card className="bg-red-950/80 border-2 border-red-500 mb-8 shadow-xl">
             <CardContent className="pt-6 flex items-start gap-4">
-              <div className="p-3 bg-red-500/20 text-red-400 rounded-full">
+              <div className="p-3 bg-red-500/20 text-red-400 rounded-full shrink-0">
                 <AlertCircle className="h-8 w-8" />
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-red-300">KYC Verification Rejected</h3>
-                <p className="text-sm text-red-200/80 mt-1">
-                  <span className="font-semibold text-white">Reason:</span>{" "}
+                <h3 className="text-lg font-bold text-red-200">KYC Verification Rejected</h3>
+                <p className="text-sm text-red-100 mt-1">
+                  <span className="font-bold text-white">Reason:</span>{" "}
                   {kycDoc?.rejectionReason || "Uploaded documents were blurry or incomplete."}
                 </p>
-                <p className="text-sm text-red-300/80 mt-2">
-                  Please review the feedback above and re-upload clear photos of your valid identity and address documents.
+                <p className="text-sm text-red-200 mt-2">
+                  Please re-upload clear photos of your valid identity and address documents below.
                 </p>
               </div>
             </CardContent>
@@ -247,23 +247,23 @@ export default function KYCPage() {
         )}
 
         {/* Upload Form Card */}
-        <Card className="bg-slate-900 border-slate-800 shadow-xl">
-          <CardHeader>
-            <CardTitle className="text-xl text-white">
+        <Card className="bg-slate-900 border-2 border-slate-700/80 shadow-2xl rounded-2xl overflow-hidden">
+          <CardHeader className="bg-slate-800/80 border-b border-slate-700/80 pb-5">
+            <CardTitle className="text-xl font-bold text-white">
               {kycStatus === "Verified" ? "Uploaded Identity Documents" : "Upload Verification Documents"}
             </CardTitle>
-            <CardDescription className="text-slate-400">
-              Provide government-issued identity proof (Aadhar / PAN / Voter ID) and valid address proof.
+            <CardDescription className="text-slate-200 text-sm font-medium mt-1">
+              Provide government-issued identity proof (Aadhaar / PAN / Voter ID) and valid address proof.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
             {error && (
-              <div className="p-4 mb-6 text-sm text-red-300 bg-red-950/50 border border-red-800 rounded-lg">
+              <div className="p-4 mb-6 text-sm font-semibold text-red-200 bg-red-950/90 border border-red-700 rounded-xl">
                 {error}
               </div>
             )}
             {successMsg && (
-              <div className="p-4 mb-6 text-sm text-emerald-300 bg-emerald-950/50 border border-emerald-800 rounded-lg">
+              <div className="p-4 mb-6 text-sm font-semibold text-emerald-200 bg-emerald-950/90 border border-emerald-700 rounded-xl">
                 {successMsg}
               </div>
             )}
@@ -271,17 +271,17 @@ export default function KYCPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="idType" className="text-slate-300">Identity Proof Type</Label>
+                  <Label htmlFor="idType" className="text-slate-100 font-semibold text-sm">Identity Proof Type</Label>
                   <Select
                     value={idProofType}
                     onValueChange={(val) => setIdProofType(val)}
                     disabled={kycStatus === "Verified"}
                   >
-                    <SelectTrigger className="bg-slate-800 border-slate-700 text-white">
+                    <SelectTrigger className="bg-slate-950 border-2 border-slate-700 text-white font-medium h-11">
                       <SelectValue placeholder="Select ID Type" />
                     </SelectTrigger>
-                    <SelectContent className="bg-slate-800 border-slate-700 text-white">
-                      <SelectItem value="Aadhar">Aadhar Card</SelectItem>
+                    <SelectContent className="bg-slate-900 border-2 border-slate-700 text-white">
+                      <SelectItem value="Aadhar">Aadhaar Card</SelectItem>
                       <SelectItem value="PAN">PAN Card</SelectItem>
                       <SelectItem value="VoterID">Voter ID</SelectItem>
                       <SelectItem value="DrivingLicense">Driving License</SelectItem>
@@ -290,14 +290,14 @@ export default function KYCPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="idNumber" className="text-slate-300">Identity Document Number</Label>
+                  <Label htmlFor="idNumber" className="text-slate-100 font-semibold text-sm">Identity Document Number</Label>
                   <Input
                     id="idNumber"
                     value={idProofNumber}
                     onChange={(e) => setIdProofNumber(e.target.value)}
-                    placeholder="Enter document number (e.g. 12-digit Aadhar)"
+                    placeholder="Enter document number (e.g. 12-digit Aadhaar)"
                     disabled={kycStatus === "Verified"}
-                    className="bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
+                    className="bg-slate-950 border-2 border-slate-700 text-white font-medium placeholder:text-slate-400 focus:border-emerald-400 focus:ring-2 focus:ring-emerald-400/40 h-11"
                   />
                 </div>
               </div>
@@ -306,27 +306,27 @@ export default function KYCPage() {
               <div className="grid md:grid-cols-2 gap-6">
                 {/* ID Proof */}
                 <div className="space-y-3">
-                  <Label className="text-slate-300">1. ID Proof Photo / Document</Label>
-                  <div className="border-2 border-dashed border-slate-700 bg-slate-800/50 rounded-xl p-6 text-center hover:border-emerald-500/50 transition-colors">
+                  <Label className="text-slate-100 font-semibold text-sm">1. ID Proof Photo / Document</Label>
+                  <div className="border-2 border-dashed border-slate-600 bg-slate-950/80 rounded-xl p-6 text-center hover:border-emerald-400 transition-colors">
                     {idProofFile ? (
                       <div className="space-y-3">
                         <img
                           src={idProofFile}
                           alt="ID Proof Preview"
-                          className="max-h-40 mx-auto rounded-md object-contain border border-slate-700"
+                          className="max-h-44 mx-auto rounded-lg object-contain border-2 border-slate-700 bg-black/40 p-1"
                         />
-                        <p className="text-xs text-slate-400 truncate">{idFileName || "ID_Proof_Uploaded"}</p>
+                        <p className="text-xs font-medium text-slate-300 truncate">{idFileName || "ID_Proof_Uploaded"}</p>
                         {kycStatus !== "Verified" && (
-                          <Label htmlFor="idProofInput" className="cursor-pointer text-xs text-emerald-400 hover:underline">
+                          <Label htmlFor="idProofInput" className="cursor-pointer text-xs font-semibold text-emerald-400 hover:text-emerald-300 underline">
                             Change ID Proof Photo
                           </Label>
                         )}
                       </div>
                     ) : (
                       <Label htmlFor="idProofInput" className="cursor-pointer flex flex-col items-center gap-2">
-                        <Upload className="h-8 w-8 text-slate-400" />
-                        <span className="text-sm font-medium text-slate-300">Click to upload ID Proof</span>
-                        <span className="text-xs text-slate-500">JPG, PNG, WebP up to 5MB</span>
+                        <Upload className="h-8 w-8 text-emerald-400" />
+                        <span className="text-sm font-semibold text-slate-100">Click to upload ID Proof</span>
+                        <span className="text-xs text-slate-300 font-medium">JPG, PNG, WebP up to 5MB</span>
                       </Label>
                     )}
                     <input
@@ -342,27 +342,27 @@ export default function KYCPage() {
 
                 {/* Address Proof */}
                 <div className="space-y-3">
-                  <Label className="text-slate-300">2. Address Proof Photo / Document</Label>
-                  <div className="border-2 border-dashed border-slate-700 bg-slate-800/50 rounded-xl p-6 text-center hover:border-emerald-500/50 transition-colors">
+                  <Label className="text-slate-100 font-semibold text-sm">2. Address Proof Photo / Document</Label>
+                  <div className="border-2 border-dashed border-slate-600 bg-slate-950/80 rounded-xl p-6 text-center hover:border-emerald-400 transition-colors">
                     {addressProofFile ? (
                       <div className="space-y-3">
                         <img
                           src={addressProofFile}
                           alt="Address Proof Preview"
-                          className="max-h-40 mx-auto rounded-md object-contain border border-slate-700"
+                          className="max-h-44 mx-auto rounded-lg object-contain border-2 border-slate-700 bg-black/40 p-1"
                         />
-                        <p className="text-xs text-slate-400 truncate">{addressFileName || "Address_Proof_Uploaded"}</p>
+                        <p className="text-xs font-medium text-slate-300 truncate">{addressFileName || "Address_Proof_Uploaded"}</p>
                         {kycStatus !== "Verified" && (
-                          <Label htmlFor="addressProofInput" className="cursor-pointer text-xs text-emerald-400 hover:underline">
+                          <Label htmlFor="addressProofInput" className="cursor-pointer text-xs font-semibold text-emerald-400 hover:text-emerald-300 underline">
                             Change Address Proof Photo
                           </Label>
                         )}
                       </div>
                     ) : (
                       <Label htmlFor="addressProofInput" className="cursor-pointer flex flex-col items-center gap-2">
-                        <Upload className="h-8 w-8 text-slate-400" />
-                        <span className="text-sm font-medium text-slate-300">Click to upload Address Proof</span>
-                        <span className="text-xs text-slate-500">Electricity Bill / Ration Card / Bank Passbook</span>
+                        <Upload className="h-8 w-8 text-emerald-400" />
+                        <span className="text-sm font-semibold text-slate-100">Click to upload Address Proof</span>
+                        <span className="text-xs text-slate-300 font-medium">Electricity Bill / Ration Card / Bank Passbook</span>
                       </Label>
                     )}
                     <input
@@ -381,16 +381,16 @@ export default function KYCPage() {
                 <Button
                   type="submit"
                   disabled={submitting}
-                  className="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-3 rounded-lg shadow-lg transition-colors"
+                  className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-bold rounded-xl h-12 text-base shadow-lg shadow-emerald-950/60 transition-all gap-2"
                 >
                   {submitting ? (
-                    <span className="flex items-center gap-2">
-                      <Loader2 className="h-4 w-4 animate-spin" /> Submitting Verification...
-                    </span>
-                  ) : kycStatus === "Pending" || kycStatus === "Rejected" ? (
-                    "Update & Re-Submit KYC Documents"
+                    <>
+                      <Loader2 className="h-5 w-5 animate-spin" /> Submitting Documents...
+                    </>
                   ) : (
-                    "Submit Documents for KYC Verification"
+                    <>
+                      <Upload className="h-5 w-5" /> Submit Documents for KYC Verification
+                    </>
                   )}
                 </Button>
               )}
