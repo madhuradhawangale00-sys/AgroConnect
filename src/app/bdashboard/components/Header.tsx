@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ZoomIn, ZoomOut, Globe } from 'lucide-react'
+import GoogleTranslate from '@/components/GoogleTranslate'
 
 const Header = () => {
   const [fontSize, setFontSize] = useState(16)
@@ -52,20 +53,7 @@ const Header = () => {
           >
             <ZoomOut size={20} />
           </button>
-          <div className="relative group">
-            <button className="p-2 rounded-full hover:bg-green-700" aria-label="Change language">
-              <Globe size={20} />
-            </button>
-            <select
-              value={language}
-              onChange={(e) => changeLanguage(e.target.value)}
-              className="absolute top-full right-0 mt-2 bg-white text-black rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out"
-            >
-              <option value="en">English</option>
-              <option value="hi">Hindi</option>
-              <option value="mr">Marathi</option>
-            </select>
-          </div>
+          <GoogleTranslate />
           <Link href="/bdashboard" className="hover:underline">
             Dashboard
           </Link>

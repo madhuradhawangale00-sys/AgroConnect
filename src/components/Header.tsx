@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { Sun, Moon, Languages, ShieldCheck, User as UserIcon, LogOut, Sprout } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import GoogleTranslate from "@/components/GoogleTranslate";
 import KYCBadge from "@/components/KYCBadge";
 import NotificationBell from "@/components/NotificationBell";
 import {
@@ -130,19 +131,8 @@ export default function Header() {
             </>
           )}
 
-          {/* Language selector */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-slate-300 hover:text-white hover:bg-slate-800">
-                <Languages className="h-5 w-5" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-slate-900 border-slate-800 text-slate-200">
-              {languages.map((language, index) => (
-                <DropdownMenuItem key={index} className="hover:bg-slate-800">{language}</DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {/* Google Translate Multi-Lingual Selector */}
+          <GoogleTranslate />
 
           {/* Theme Toggle */}
           <Button variant="ghost" size="icon" onClick={toggleTheme} className="text-slate-300 hover:text-white hover:bg-slate-800">
