@@ -70,17 +70,13 @@ export default function Home() {
             </div>
 
             {/* Hero Quick Key Metrics */}
-            <div className="pt-8 border-t border-slate-800/80 grid grid-cols-3 gap-4">
+            <div className="pt-8 border-t border-slate-800/80 grid grid-cols-2 gap-6">
               <div>
                 <p className="text-2xl sm:text-3xl font-extrabold text-white">100%</p>
                 <p className="text-xs text-slate-400 font-semibold mt-0.5">KYC Verified Parties</p>
               </div>
               <div>
-                <p className="text-2xl sm:text-3xl font-extrabold text-emerald-400">0%</p>
-                <p className="text-xs text-slate-400 font-semibold mt-0.5">Middleman Cuts</p>
-              </div>
-              <div>
-                <p className="text-2xl sm:text-3xl font-extrabold text-amber-400">Auto PDF</p>
+                <p className="text-2xl sm:text-3xl font-extrabold text-emerald-400">Auto PDF</p>
                 <p className="text-xs text-slate-400 font-semibold mt-0.5">Legal Contracts</p>
               </div>
             </div>
