@@ -5,12 +5,12 @@ import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
-import { Send, Tag, CheckCircle2, XCircle, FileText, ArrowLeft, Loader2, DollarSign, ShieldCheck, Sprout } from "lucide-react";
+import { Send, Tag, CheckCircle2, XCircle, ArrowLeft, Loader2, DollarSign, ShieldCheck, Sprout } from "lucide-react";
 import Link from "next/link";
 
 export default function ChatRoomPage() {
@@ -202,9 +202,7 @@ export default function ChatRoomPage() {
 
   const currentUserEmail = session?.user?.email;
   const isFarmer = currentUserEmail === chat.farmerEmail;
-  const counterpartyName = isFarmer ? chat.buyerName : chat.farmerName;
   const userAgreed = isFarmer ? chat.farmerAgreed : chat.buyerAgreed;
-  const counterpartyAgreed = isFarmer ? chat.buyerAgreed : chat.farmerAgreed;
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">

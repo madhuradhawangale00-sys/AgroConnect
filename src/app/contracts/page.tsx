@@ -8,7 +8,7 @@ import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { FileText, Calendar, Tag, User as UserIcon, ShieldCheck, ArrowRight, Loader2, Sprout } from "lucide-react";
+import { FileText, Calendar, Tag, Loader2, Sprout } from "lucide-react";
 import Link from "next/link";
 
 export default function ContractsDashboardPage() {

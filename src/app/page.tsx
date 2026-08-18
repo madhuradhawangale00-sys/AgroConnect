@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ShieldCheck, Sprout, MessageSquare, FileText, Search, Truck, ArrowRight, UserCheck, Building2, UserPlus, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, Sprout, MessageSquare, FileText, Search, Truck, ArrowRight, Building2, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import Header from "@/components/Header";

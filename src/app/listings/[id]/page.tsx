@@ -9,7 +9,7 @@ import KYCBadge from "@/components/KYCBadge";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, MapPin, Calendar, Tag, User as UserIcon, ShieldCheck, ArrowLeft, Loader2, Sprout, CheckCircle2 } from "lucide-react";
+import { MessageSquare, MapPin, Calendar, Tag, User as UserIcon, ArrowLeft, Loader2, Sprout } from "lucide-react";
 import Link from "next/link";
 
 export default function ListingDetailPage() {

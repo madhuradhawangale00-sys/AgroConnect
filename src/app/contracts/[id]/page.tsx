@@ -5,13 +5,12 @@ import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import KYCBadge from "@/components/KYCBadge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FileText, Download, CheckCircle2, Clock, ShieldCheck, ArrowLeft, Loader2, Truck, CreditCard, AlertTriangle, Sprout } from "lucide-react";
+import { Download, CheckCircle2, ShieldCheck, ArrowLeft, Loader2, Truck, CreditCard, Sprout } from "lucide-react";
 import Link from "next/link";
 
 const MILESTONES = [
@@ -24,9 +23,6 @@ const MILESTONES = [
 
 export default function ContractDetailPage() {
   const params = useParams();
-  const router = useRouter();
-  const { data: session } = useSession();
-
   const contractId = params?.id as string;
 
   const [contract, setContract] = useState<any | null>(null);

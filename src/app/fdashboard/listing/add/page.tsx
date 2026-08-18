@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ArrowLeft, Upload, Sprout, Loader2, Plus, X } from "lucide-react";
+import { ArrowLeft, Sprout, Loader2, Plus, X } from "lucide-react";
 import Link from "next/link";
 
 const INDIAN_STATES = [
@@ -27,7 +27,7 @@ const COMMON_CROPS = [
 ];
 
 export default function AddProduceListingPage() {
-  const { data: session, status: sessionStatus } = useSession();
+  const { status: sessionStatus } = useSession();
   const router = useRouter();
 
   const [submitting, setSubmitting] = useState(false);

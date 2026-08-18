@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { Bell, Check, Tag, FileText, ShieldCheck, AlertCircle } from "lucide-react";
+import { Bell, Check, Tag, FileText, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
