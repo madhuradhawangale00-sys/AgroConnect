@@ -17,7 +17,10 @@ import { ShieldCheck, Upload, FileCheck, AlertCircle, ArrowLeft, Loader2 } from 
 import Link from "next/link";
 
 export default function KYCPage() {
-  const { data: session, status: sessionStatus, update } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
+  const sessionStatus = sessionData?.status || "unauthenticated";
+  const update = sessionData?.update || (async () => {});
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);

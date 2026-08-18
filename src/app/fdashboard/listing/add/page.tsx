@@ -29,7 +29,8 @@ const COMMON_CROPS = [
 ];
 
 export default function AddProduceListingPage() {
-  const { status: sessionStatus } = useSession();
+  const sessionData = useSession();
+  const sessionStatus = sessionData?.status || "unauthenticated";
   const router = useRouter();
 
   const [submitting, setSubmitting] = useState(false);

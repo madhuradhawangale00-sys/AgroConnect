@@ -18,7 +18,8 @@ import Link from "next/link";
 export default function ChatRoomPage() {
   const params = useParams();
   const router = useRouter();
-  const { data: session } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
 
   const chatId = params?.id as string;
 

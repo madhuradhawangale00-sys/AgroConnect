@@ -16,7 +16,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { ShieldCheck, CheckCircle2, XCircle, Clock, Eye, AlertCircle, Loader2, Users } from "lucide-react";
 
 export default function AdminKYCQueuePage() {
-  const { data: session, status: sessionStatus } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
+  const sessionStatus = sessionData?.status || "unauthenticated";
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);

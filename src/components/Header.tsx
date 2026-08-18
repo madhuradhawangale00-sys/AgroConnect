@@ -17,7 +17,8 @@ import {
 const languages = ["English", "हिन्दी", "मराठी"];
 
 export default function Header() {
-  const { data: session } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   useEffect(() => {

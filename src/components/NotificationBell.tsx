@@ -13,7 +13,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function NotificationBell() {
-  const { data: session } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
 

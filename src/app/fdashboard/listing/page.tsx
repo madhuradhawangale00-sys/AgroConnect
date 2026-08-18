@@ -15,7 +15,9 @@ import { Plus, Trash2, Calendar, MapPin, Tag, Loader2, Sprout, ArrowRight } from
 import Link from "next/link";
 
 export default function MyFarmerListingsPage() {
-  const { data: session, status: sessionStatus } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
+  const sessionStatus = sessionData?.status || "unauthenticated";
   const router = useRouter();
 
   const [listings, setListings] = useState<any[]>([]);

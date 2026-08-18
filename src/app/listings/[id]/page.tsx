@@ -17,7 +17,8 @@ import Link from "next/link";
 export default function ListingDetailPage() {
   const params = useParams();
   const router = useRouter();
-  const { data: session } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
 
   const [listing, setListing] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);

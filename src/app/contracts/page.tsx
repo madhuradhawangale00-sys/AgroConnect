@@ -14,7 +14,9 @@ import { FileText, Calendar, Tag, Loader2, Sprout } from "lucide-react";
 import Link from "next/link";
 
 export default function ContractsDashboardPage() {
-  const { data: session, status: sessionStatus } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
+  const sessionStatus = sessionData?.status || "unauthenticated";
   const router = useRouter();
 
   const [contracts, setContracts] = useState<any[]>([]);

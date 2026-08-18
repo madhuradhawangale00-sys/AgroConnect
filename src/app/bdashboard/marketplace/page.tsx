@@ -25,7 +25,8 @@ const INDIAN_STATES = [
 ];
 
 export default function BuyerMarketplacePage() {
-  const { data: session } = useSession();
+  const sessionData = useSession();
+  const session = sessionData?.data;
 
   const [listings, setListings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
