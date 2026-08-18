@@ -36,59 +36,40 @@ export default function DashboardPage() {
 
   // Fetch listings from the API
   useEffect(() => {
-    const fetchListings = async () => { 
-      const email = localStorage.getItem('email') // Get email from localStorage (ensure it's available)
-      console.log("Email retrieved from localStorage:", email);
-      
-      if (email) {
-        try {
-          console.log("API call started...");
-          setLoading(true) // Set loading to true when the API call starts
-          // const response = await fetch(`https://localhost:8000/fdashboard/listings/view/`)
-          
-          const response = await fetch("https://localhost:8000/fdashboard/listings/view/", {
-            method: "POST",  // Use POST method
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email }), // Send email in request body
-        });
-
-          if (!response.ok) {
-            throw new Error('Failed to fetch listings')
-          }
-
-          const data = await response.json()
-          console.log("API response data:", data); // Log response data
-          
-          // Ensure the data is an array before setting it to state
-          if (Array.isArray(data)) {
-            setListings(data)
-          } else {
-            console.error("Expected data to be an array, but got:", data);
-            setError('Error: Data is not in the expected format');
-          }
-
-        } catch (error) {
-          if (error instanceof Error) {
-            console.error("Error fetching listings:", error.message);  // Now TypeScript knows 'error' has a 'message' property
-            setError(error.message);  // Set the error message
-          } else {
-            console.error("Unknown error:", error);  // Handle unexpected error types
-            setError("An unexpected error occurred");
-          }
-        } finally {
-          setLoading(false) // Set loading to false when the request is finished
-          console.log("API call finished.");
+    const fetchListings = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/listings?myListings=true");
+        const data = await response.json();
+        if (data.success && Array.isArray(data.listings)) {
+          const mappedListings = data.listings.map((item: any) => ({
+            id: item._id,
+            title: item.title || item.cropName,
+            description: item.description || "",
+            price: item.pricePerUnit || item.price,
+            location: typeof item.location === "object" ? `${item.location.city || ""}, ${item.location.state || ""}` : (item.location || ""),
+            croptype: item.cropName || item.croptype || "Crop",
+            status: item.status === "Active" ? "Accepted" : item.status || "Pending",
+            quantity: `${item.quantity || ""} ${item.quantityUnit || "Quintal"}`.trim(),
+          }));
+          setListings(mappedListings);
+        } else {
+          setListings([]);
         }
-      } else {
-        console.log("No email found in localStorage.");
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error("Error fetching listings:", error.message);
+          setError(error.message);
+        } else {
+          setError("An unexpected error occurred");
+        }
+      } finally {
         setLoading(false);
       }
-    }
+    };
 
-    fetchListings()
-  }, []) // Empty dependency array ensures this runs only once on component mount
+    fetchListings();
+  }, []); // Empty dependency array ensures this runs only once on component mount
 
   return (
     <DashboardLayout>
