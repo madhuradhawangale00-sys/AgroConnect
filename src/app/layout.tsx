@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import Providers from "./provider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -15,10 +16,9 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "KisanMitra",
-  description: "KisanMitra is a platform for the farmer and the buyer to make right deals at right price",
+  title: "AgroConnect - Contract Farming Marketplace (SIH 1640)",
+  description: "Digital contract farming marketplace connecting farmers directly with corporate buyers.",
 };
-
 
 export default function RootLayout({
   children,
@@ -30,8 +30,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
 }
+
