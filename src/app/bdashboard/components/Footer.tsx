@@ -16,8 +16,8 @@ export default function Footer() {
       </div>
       <div className="container py-12 grid grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
         <div>
-          <h3 className="text-lg font-semibold mb-4">About KisanMitra</h3>
-          <p className="text-sm">
+          <h3 className="text-lg font-semibold mb-4 text-emerald-400">About AgroConnect</h3>
+          <p className="text-sm text-slate-300">
             Empowering farmers and buyers through innovative technology and fair trade practices
           </p>
         </div>
@@ -52,8 +52,8 @@ export default function Footer() {
         </div>
       </div>
       <div className="container py-4 border-t border-white/10 relative z-10">
-        <p className="text-sm text-center">
-          © 2024 KisanMitra. All rights reserved.
+        <p className="text-sm text-center text-slate-300">
+          © {new Date().getFullYear()} AgroConnect. All rights reserved.
         </p>
       </div>
     </footer>

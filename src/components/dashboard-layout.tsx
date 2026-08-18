@@ -33,7 +33,7 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
           <Sidebar className="hidden md:block bg-background/80 backdrop-blur-sm">
             <SidebarHeader>
               <Link href="/" className="flex items-center space-x-2 px-4 py-2">
-                <span className="text-2xl font-bold">KisanMitra</span>
+                <span className="text-2xl font-bold">AgroConnect</span>
               </Link>
             </SidebarHeader>
             <SidebarContent>

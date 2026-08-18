@@ -122,7 +122,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <h3 className="font-bold text-white text-base">AgroConnect Headquarters</h3>
-                    <p className="text-slate-400 mt-1">123 KisanMitra Street, Agri Tower</p>
+                    <p className="text-slate-400 mt-1">123 AgroConnect Street, Agri Tower</p>
                     <p className="text-slate-400">New Delhi, 110001, India</p>
                   </div>
                 </div>

@@ -25,7 +25,7 @@ const Header = () => {
     <header className="text-white bg-transparent"> {/* Transparent header */}
       <nav className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="text-2xl font-bold">
-          Kisan Mitra
+          AgroConnect
         </Link>
         <div className="flex items-center space-x-4">
           <button
