@@ -61,10 +61,21 @@ export default function GoogleTranslate() {
       script.id = "google-translate-script";
       script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
       script.async = true;
+      script.onerror = (e) => {
+        console.warn("Google Translate script failed to load gracefully", e);
+      };
       document.body.appendChild(script);
     } else if (window.google && window.google.translate) {
       window.googleTranslateElementInit();
     }
+
+    // Suppress raw browser script Event unhandled rejection overlays in dev mode
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      if (event.reason instanceof Event || (event.reason && typeof event.reason === "object" && "type" in event.reason && !("message" in event.reason))) {
+        event.preventDefault();
+      }
+    };
+    window.addEventListener("unhandledrejection", handleUnhandledRejection);
 
     // Remove Google Translate banner frames and top margin overrides
     const interval = setInterval(() => {
@@ -77,7 +88,10 @@ export default function GoogleTranslate() {
       }
     }, 500);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("unhandledrejection", handleUnhandledRejection);
+    };
   }, []);
 
   const changeLanguage = (langCode: string) => {
