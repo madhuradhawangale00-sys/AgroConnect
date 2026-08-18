@@ -30,19 +30,23 @@ export default function CropHelpPage() {
   return (
     <DashboardLayout>
       <PageBackground imageSrc="/resources/background4.jpeg" />
-      <h1 className="text-3xl font-bold mb-6">Crop Help</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="flex flex-col gap-2 mb-8">
+        <h1 className="text-3xl font-extrabold text-white">Agronomy & Crop Advisory</h1>
+        <p className="text-slate-300 text-sm">Expert agricultural guides for soil health, pest protection, and yield optimization.</p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {cropHelpTopics.map((topic, index) => (
-          <Card key={index}>
+          <Card key={index} className="bg-slate-900/90 border-slate-800 shadow-xl flex flex-col justify-between hover:border-emerald-500/50">
             <CardHeader>
-              <CardTitle className="flex items-center">
-                <span className="mr-2 text-2xl">{topic.icon}</span>
+              <CardTitle className="flex items-center text-white text-xl">
+                <span className="mr-3 text-3xl">{topic.icon}</span>
                 {topic.title}
               </CardTitle>
-              <CardDescription>{topic.description}</CardDescription>
+              <CardDescription className="text-slate-300 text-sm leading-relaxed mt-2">{topic.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="outline" className="w-full">Learn More</Button>
+              <Button variant="secondary" className="w-full font-bold text-slate-200 hover:text-white">Learn More</Button>
             </CardContent>
           </Card>
         ))}

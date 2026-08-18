@@ -18,26 +18,28 @@ export default function NotificationBell() {
   const [notifications, setNotifications] = useState<any[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  useEffect(() => {
-    if (session?.user?.email) {
-      fetchNotifications();
-      const interval = setInterval(fetchNotifications, 10000);
-      return () => clearInterval(interval);
-    }
-  }, [session?.user?.email]);
+  const userEmail = session?.user?.email;
 
-  const fetchNotifications = async () => {
-    try {
-      const res = await fetch("/api/notifications");
-      const data = await res.json();
-      if (data.success) {
-        setNotifications(data.notifications || []);
-        setUnreadCount(data.unreadCount || 0);
+  useEffect(() => {
+    if (!userEmail) return;
+
+    const loadNotifications = async () => {
+      try {
+        const res = await fetch("/api/notifications");
+        const data = await res.json();
+        if (data.success) {
+          setNotifications(data.notifications || []);
+          setUnreadCount(data.unreadCount || 0);
+        }
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    };
+
+    loadNotifications();
+    const interval = setInterval(loadNotifications, 10000);
+    return () => clearInterval(interval);
+  }, [userEmail]);
 
   const handleMarkAllRead = async () => {
     try {

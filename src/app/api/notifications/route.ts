@@ -5,7 +5,7 @@ import { connectDB } from "@/lib/mongodb";
 import Notification from "@/models/Notification";
 
 // GET: Fetch user notifications
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
   try {
     const session = await getServerSession(authOptions);
     if (!session || !session.user?.email) {

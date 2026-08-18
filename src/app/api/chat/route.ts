@@ -199,6 +199,9 @@ export async function PUT(request: Request) {
 
     // Action 2: Sign/Agree to terms for contract generation
     if (action === "agree") {
+      if (agreedPrice) chat.agreedPrice = Number(agreedPrice);
+      if (agreedQuantity) chat.agreedQuantity = Number(agreedQuantity);
+
       if (userEmail === chat.farmerEmail) {
         chat.farmerAgreed = true;
       } else if (userEmail === chat.buyerEmail) {

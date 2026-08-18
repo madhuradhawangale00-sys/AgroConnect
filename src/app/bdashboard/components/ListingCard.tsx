@@ -75,34 +75,33 @@ export default function ListingCard({ listing }: { listing: CropListing }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:8004/update-bid', {
+      const response = await fetch('/api/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          listingId: listing.id,        // Sending listingId as part of the request
-          mobileNumber,
-          expectedPrice,
-          cropPrice: listing.price,      // The price of the crop from the listing
-          buyerName,
-          bemail: buyerEmail,            // The buyer's email
-          status: 'pending',             // Status of the interest
-          advance: advance || '0',       // Default advance to '0' if not provided
+          listingId: listing.id,
+          isOffer: true,
+          offerAmount: Number(expectedPrice || listing.price),
+          offerQuantity: 100,
+          text: `Buyer Interest from ${buyerName || 'Buyer'}: Proposed price ₹${expectedPrice || listing.price}`,
         }),
       });
 
-      if (response.ok) {
-        alert('Interest submitted successfully!');
+      const data = await response.json();
+      if (response.ok && data.success) {
+        alert('Price offer & interest submitted successfully! Redirecting to negotiation chat...');
+        if (data.chatId) {
+          window.location.href = `/chat/${data.chatId}`;
+        }
       } else {
-        const errorData = await response.json();
-        alert(errorData.message || 'Failed to submit interest');
+        alert(data.error || 'Failed to submit interest');
       }
     } catch (error) {
       console.error('Error submitting interest:', error);
     }
 
-    // Reset form fields after submission
     setMobileNumber('');
     setExpectedPrice('');
     setBuyerName('');

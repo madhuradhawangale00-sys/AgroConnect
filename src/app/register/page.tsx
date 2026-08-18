@@ -70,6 +70,7 @@ export default function Register() {
         setTimeout(() => router.push("/login"), 1500);
       }
     } catch (err) {
+      console.error(err);
       setError("An error occurred during registration. Please try again.");
       setLoading(false);
     }

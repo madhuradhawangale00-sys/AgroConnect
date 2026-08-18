@@ -4,58 +4,43 @@ import { useState, useEffect } from 'react';
 import { DashboardLayout } from '@/components/dashboard-layout';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { PageBackground } from '@/components/PageBackground';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
-// Define the type for contract data according to the API response
 interface Contract {
-  _id: string; // Unique identifier
-  croptype: string;
-  price: number;
+  _id: string;
+  cropName: string;
+  agreedPricePerUnit: number;
   quantity: number;
+  unit?: string;
+  totalAmount: number;
   status: string;
-  startDate: string;
-  endDate: string;
-  advancedTransactionId: string;
-  paymentTransactionId: string;
-  bemail: string;
-  femail: string;
+  buyerEmail: string;
+  buyerName?: string;
+  createdAt: string;
 }
 
 export default function ContractsPage() {
-  const [contracts, setContracts] = useState<Contract[]>([]); // Initialize as empty array
+  const [contracts, setContracts] = useState<Contract[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null); // For error handling
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchContracts = async () => {
       try {
-        if (typeof window === 'undefined') return;
-
-        // Retrieve the email from localStorage
-        const email = localStorage.getItem('email');
-        console.log('Email:', email);
-
-        if (!email) {
-          throw new Error('User email not found in localStorage.');
-        }
-
-        // Fetch contracts using the stored email
-        const response = await fetch(`http://172.22.25.168:8003/a/${email}`);
+        setLoading(true);
+        const response = await fetch('/api/contracts');
         const data = await response.json();
-        console.log('API Response:', data);
 
-        if (!response.ok) {
-          throw new Error(data.message || 'Failed to fetch contracts.');
-        }
-
-        // Update state with contracts array from response
-        if (Array.isArray(data)) {
-          setContracts(data); // Use the correct structure from the API response
+        if (data.success && Array.isArray(data.contracts)) {
+          setContracts(data.contracts);
+        } else if (data.error) {
+          setError(data.error);
         } else {
-          console.warn('Expected an array but got:', data);
-          setContracts([]); // Handle case where no contracts are returned
+          setContracts([]);
         }
       } catch (err) {
-        setError('Something went wrong.');
+        setError('Failed to fetch contracts.');
         console.error('Error fetching contracts:', err);
       } finally {
         setLoading(false);
@@ -68,51 +53,65 @@ export default function ContractsPage() {
   return (
     <DashboardLayout>
       <PageBackground imageSrc="/resources/background2.jpeg" />
-      {/* <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">My Contracts</h1>
-        <Button>View Contract Offers</Button>
-      </div> */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold text-white">Farmer Digital Contracts</h1>
+        <Button asChild className="bg-emerald-600 hover:bg-emerald-500 text-white">
+          <Link href="/contracts">Full Contracts Portal</Link>
+        </Button>
+      </div>
 
       {loading ? (
-        <div className="flex justify-center items-center">
-          <p>Loading...</p> {/* Use a spinner component or loading text */}
+        <div className="flex justify-center items-center py-12">
+          <p className="text-white text-lg">Loading contracts...</p>
         </div>
       ) : error ? (
-        <div className="text-center text-red-500">
+        <div className="text-center text-red-400 py-12">
           <p>{error}</p>
         </div>
       ) : contracts.length === 0 ? (
-        <div className="text-center">
-          <p>No contracts found. Start creating your first contract!</p>
+        <div className="text-center text-white bg-slate-900/80 p-8 rounded-xl border border-slate-800">
+          <p className="text-lg font-semibold">No active contracts found.</p>
+          <p className="text-slate-400 text-sm mt-1">Accept deal proposals in negotiation chat to generate digital contracts.</p>
         </div>
       ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Buyer Email</TableHead>
-              <TableHead>Crop</TableHead>
-              <TableHead>Quantity</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Status</TableHead>
-              {/* <TableHead>Actions</TableHead> */}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {contracts.map((contract) => (
-              <TableRow key={contract._id}>
-                <TableCell>{contract.bemail}</TableCell>
-                <TableCell>{contract.croptype}</TableCell>
-                <TableCell>{contract.quantity}</TableCell>
-                <TableCell>{contract.price}</TableCell>
-                <TableCell>{contract.status}</TableCell>
-                {/* <TableCell>
-                  <Button variant="outline" size="sm">View Details</Button>
-                </TableCell> */}
+        <div className="bg-white/95 rounded-xl shadow-xl overflow-hidden">
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-slate-100">
+                <TableHead className="font-bold text-slate-900">Buyer</TableHead>
+                <TableHead className="font-bold text-slate-900">Crop</TableHead>
+                <TableHead className="font-bold text-slate-900">Quantity</TableHead>
+                <TableHead className="font-bold text-slate-900">Rate</TableHead>
+                <TableHead className="font-bold text-slate-900">Total Deal</TableHead>
+                <TableHead className="font-bold text-slate-900">Status</TableHead>
+                <TableHead className="font-bold text-slate-900 text-right">Action</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {contracts.map((contract) => (
+                <TableRow key={contract._id} className="hover:bg-slate-50">
+                  <TableCell className="font-medium text-slate-900">{contract.buyerName || contract.buyerEmail}</TableCell>
+                  <TableCell className="font-bold text-emerald-700">{contract.cropName}</TableCell>
+                  <TableCell className="text-slate-800">{contract.quantity} {contract.unit || "Quintal"}</TableCell>
+                  <TableCell className="text-slate-800">₹{contract.agreedPricePerUnit}</TableCell>
+                  <TableCell className="font-bold text-slate-900">₹{contract.totalAmount?.toLocaleString("en-IN")}</TableCell>
+                  <TableCell>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                      {contract.status}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button variant="outline" size="sm" asChild className="border-slate-300 text-slate-800 hover:bg-slate-100">
+                      <Link href={`/contracts/${contract._id}`}>View Digital PDF</Link>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       )}
     </DashboardLayout>
   );
 }
+

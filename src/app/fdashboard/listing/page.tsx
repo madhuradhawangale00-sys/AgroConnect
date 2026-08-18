@@ -32,7 +32,7 @@ export default function MyFarmerListingsPage() {
     if (sessionStatus === "authenticated") {
       fetchMyListings();
     }
-  }, [sessionStatus]);
+  }, [sessionStatus, router]);
 
   const fetchMyListings = async () => {
     try {

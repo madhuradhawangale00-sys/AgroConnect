@@ -8,12 +8,12 @@ import { useRouter } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import KYCBadge from "@/components/KYCBadge";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { ShieldCheck, CheckCircle2, XCircle, Clock, Eye, AlertCircle, Loader2, Users } from "lucide-react";
+import { ShieldCheck, CheckCircle2, XCircle, AlertCircle, Loader2, Users } from "lucide-react";
 
 export default function AdminKYCQueuePage() {
   const sessionData = useSession();
@@ -44,7 +44,7 @@ export default function AdminKYCQueuePage() {
       }
       fetchAdminKYCDocuments();
     }
-  }, [sessionStatus]);
+  }, [sessionStatus, session?.user, router]);
 
   const fetchAdminKYCDocuments = async () => {
     try {

@@ -31,7 +31,7 @@ export default function ContractsDashboardPage() {
     if (sessionStatus === "authenticated") {
       fetchUserContracts();
     }
-  }, [sessionStatus]);
+  }, [sessionStatus, router]);
 
   const fetchUserContracts = async () => {
     try {

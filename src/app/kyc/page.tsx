@@ -47,7 +47,7 @@ export default function KYCPage() {
     if (sessionStatus === "authenticated") {
       fetchKYCStatus();
     }
-  }, [sessionStatus]);
+  }, [sessionStatus, router]);
 
   const fetchKYCStatus = async () => {
     try {
@@ -145,6 +145,7 @@ export default function KYCPage() {
         await update({ kycStatus: "Pending" });
       }
     } catch (err) {
+      console.error(err);
       setError("An unexpected error occurred.");
     } finally {
       setSubmitting(false);

@@ -23,28 +23,32 @@
 //   return NextResponse.json(mockFarmerDetails)
 // }
 
-import { NextResponse } from 'next/server'
+import { NextResponse } from 'next/server';
+import { connectDB } from '@/lib/mongodb';
+import User from '@/models/User';
 
 export async function GET(request: Request) {
   try {
-    const email = request.headers.get('email') || '';
+    const { searchParams } = new URL(request.url);
+    const email = searchParams.get('email') || request.headers.get('email') || '';
 
     if (!email) {
       return NextResponse.json({ message: 'Email is required' }, { status: 400 });
     }
 
-    const response = await fetch(`http://172.22.25.168:8001/a/${email}`);
-    const farmerDetails = await response.json();
+    await connectDB();
+    const farmer = await User.findOne({ email }).select('-password').lean();
 
-    if (!response.ok) {
-      return NextResponse.json({ message: 'Failed to fetch farmer details' }, { status: 500 });
+    if (!farmer) {
+      return NextResponse.json({ message: 'Farmer not found' }, { status: 404 });
     }
 
-    return NextResponse.json(farmerDetails);
+    return NextResponse.json({ success: true, farmer });
   } catch (error) {
     console.error('Error fetching farmer details:', error);
     return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
   }
 }
+
 
 

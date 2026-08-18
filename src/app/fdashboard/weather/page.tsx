@@ -71,58 +71,62 @@ export default function WeatherPage() {
   return (
     <DashboardLayout>
       <PageBackground imageSrc="/resources/background5.jpeg" />
-      <h1 className="text-3xl font-bold mb-6">Weather Information</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="flex flex-col gap-2 mb-8">
+        <h1 className="text-3xl font-extrabold text-white flex items-center gap-3">
+          <Sun className="h-8 w-8 text-amber-400" /> Real-time Harvest & Weather Forecast
+        </h1>
+        <p className="text-slate-300 text-sm">Live environmental telemetry for crop planning, irrigation management, and harvest scheduling.</p>
+      </div>
+
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
         {/* Temperature Card */}
-        <Card>
+        <Card className="bg-slate-900/90 border-slate-800 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Temperature</CardTitle>
-            <Thermometer className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-semibold text-slate-300">Temperature</CardTitle>
+            <Thermometer className="h-5 w-5 text-amber-400" />
           </CardHeader>
           <CardContent>
-            {/* Use optional chaining to avoid undefined error */}
-            <div className="text-2xl font-bold">{weatherData?.temp}°C</div>
-            <p className="text-xs text-muted-foreground">Feels like {weatherData?.temp ? weatherData.temp + 2 : "N/A"}°C</p>
+            <div className="text-3xl font-black text-white">{weatherData?.temp}°C</div>
+            <p className="text-xs text-slate-400 mt-1 font-medium">Feels like {weatherData?.temp ? weatherData.temp + 2 : "N/A"}°C</p>
           </CardContent>
         </Card>
 
         {/* Humidity Card */}
-        <Card>
+        <Card className="bg-slate-900/90 border-slate-800 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Humidity</CardTitle>
-            <Droplets className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-semibold text-slate-300">Relative Humidity</CardTitle>
+            <Droplets className="h-5 w-5 text-emerald-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{weatherData?.humidity}%</div>
-            <p className="text-xs text-muted-foreground">Moderate</p>
+            <div className="text-3xl font-black text-emerald-400">{weatherData?.humidity}%</div>
+            <p className="text-xs text-slate-400 mt-1 font-medium">Optimal Soil Moisture Retention</p>
           </CardContent>
         </Card>
 
         {/* UV Index Card */}
-        <Card>
+        <Card className="bg-slate-900/90 border-slate-800 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">UV Index</CardTitle>
-            <Sun className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-semibold text-slate-300">UV Solar Index</CardTitle>
+            <Sun className="h-5 w-5 text-amber-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{weatherData?.uvIndex}</div>
-            <p className="text-xs text-muted-foreground">High</p>
+            <div className="text-3xl font-black text-amber-400">{weatherData?.uvIndex}</div>
+            <p className="text-xs text-slate-400 mt-1 font-medium">High Sunlight Exposure</p>
           </CardContent>
         </Card>
 
         {/* Precipitation Card */}
-        <Card>
+        <Card className="bg-slate-900/90 border-slate-800 shadow-xl">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Precipitation</CardTitle>
-            <Cloud className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-semibold text-slate-300">Precipitation Chance</CardTitle>
+            <Cloud className="h-5 w-5 text-sky-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{weatherData?.precip}%</div>
-            <p className="text-xs text-muted-foreground">Chance of rain</p>
+            <div className="text-3xl font-black text-sky-400">{weatherData?.precip}%</div>
+            <p className="text-xs text-slate-400 mt-1 font-medium">Precipitation Telemetry</p>
           </CardContent>
         </Card>
       </div>
-      {/* Optionally, you can add a weather forecast component here */}
     </DashboardLayout>
   )
 }

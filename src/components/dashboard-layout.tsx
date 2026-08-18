@@ -1,7 +1,8 @@
-"use client" // Add this directive to mark this as a client component
+"use client"
 
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 import {LayoutDashboard, FileCodeIcon as FileContract, Cloud, Sprout, Award, Truck } from 'lucide-react';
@@ -18,27 +19,11 @@ const navItems = [
 ];
 
 export function DashboardLayout({ children }: { children: ReactNode }) {
-  // const { setTheme, theme } = useTheme();
-  
-  // State to check if the component has mounted to avoid SSR mismatches
-  const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
-  // Function to add active class manually (optional)
   const getActiveClass = (href: string) => {
-    if (typeof window !== "undefined") {
-      return window.location.pathname === href ? 'bg-primary' : '';
-    }
-    return '';
+    return pathname === href ? 'bg-primary font-bold text-white' : '';
   };
-
-  useEffect(() => {
-    // Ensures that we are on the client before using theme or window
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return null; // Return nothing on the server render
-  }
 
   return (
     <SidebarProvider>

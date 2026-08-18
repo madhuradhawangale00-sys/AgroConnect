@@ -28,25 +28,25 @@ export default function ListingDetailPage() {
   const listingId = params?.id as string;
 
   useEffect(() => {
-    if (listingId) {
-      fetchListingDetails();
-    }
-  }, [listingId]);
+    if (!listingId) return;
 
-  const fetchListingDetails = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`/api/listings?id=${listingId}`);
-      const data = await res.json();
-      if (data.success) {
-        setListing(data.listing);
+    const fetchListingDetails = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/listings?id=${listingId}`);
+        const data = await res.json();
+        if (data.success) {
+          setListing(data.listing);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchListingDetails();
+  }, [listingId]);
 
   const handleStartNegotiation = async () => {
     if (!session) {

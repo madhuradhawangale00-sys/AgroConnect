@@ -3,8 +3,7 @@
 export const dynamic = "force-dynamic";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -34,26 +33,26 @@ export default function ContractDetailPage() {
   const [newStatus, setNewStatus] = useState("");
 
   useEffect(() => {
-    if (contractId) {
-      fetchContractDetails();
-    }
-  }, [contractId]);
+    if (!contractId) return;
 
-  const fetchContractDetails = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch(`/api/contracts?id=${contractId}`);
-      const data = await res.json();
-      if (data.success) {
-        setContract(data.contract);
-        setNewStatus(data.contract.status);
+    const fetchContractDetails = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(`/api/contracts?id=${contractId}`);
+        const data = await res.json();
+        if (data.success) {
+          setContract(data.contract);
+          setNewStatus(data.contract.status);
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
+
+    fetchContractDetails();
+  }, [contractId]);
 
   const handleUpdateStatus = async () => {
     if (!newStatus || updating) return;

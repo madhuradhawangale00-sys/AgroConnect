@@ -15,7 +15,7 @@ export default function KYCBadge({ status = "Not Submitted", size = "md", showTe
 
   if (status === "Verified") {
     return (
-      <Badge className="bg-emerald-600 hover:bg-emerald-700 text-white font-medium flex items-center gap-1.5 px-2.5 py-1 shadow-sm">
+      <Badge variant="verified" className="flex items-center gap-1.5 px-2.5 py-1">
         <ShieldCheck className={iconSize} />
         {showText && <span>KYC Verified</span>}
       </Badge>
@@ -24,7 +24,7 @@ export default function KYCBadge({ status = "Not Submitted", size = "md", showTe
 
   if (status === "Pending") {
     return (
-      <Badge variant="outline" className="border-amber-500 text-amber-600 bg-amber-50 dark:bg-amber-950/30 font-medium flex items-center gap-1.5 px-2.5 py-1">
+      <Badge variant="pending" className="flex items-center gap-1.5 px-2.5 py-1">
         <Clock className={iconSize} />
         {showText && <span>KYC Pending</span>}
       </Badge>
@@ -33,7 +33,7 @@ export default function KYCBadge({ status = "Not Submitted", size = "md", showTe
 
   if (status === "Rejected") {
     return (
-      <Badge variant="destructive" className="font-medium flex items-center gap-1.5 px-2.5 py-1">
+      <Badge variant="rejected" className="flex items-center gap-1.5 px-2.5 py-1">
         <XCircle className={iconSize} />
         {showText && <span>KYC Rejected</span>}
       </Badge>
@@ -41,7 +41,7 @@ export default function KYCBadge({ status = "Not Submitted", size = "md", showTe
   }
 
   return (
-    <Badge variant="secondary" className="bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-medium flex items-center gap-1.5 px-2.5 py-1">
+    <Badge variant="secondary" className="flex items-center gap-1.5 px-2.5 py-1">
       <AlertCircle className={iconSize} />
       {showText && <span>KYC Unverified</span>}
     </Badge>

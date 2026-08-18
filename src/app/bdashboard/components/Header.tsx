@@ -2,20 +2,15 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ZoomIn, ZoomOut, Globe } from 'lucide-react'
+import { ZoomIn, ZoomOut } from 'lucide-react'
 import GoogleTranslate from '@/components/GoogleTranslate'
 
 const Header = () => {
   const [fontSize, setFontSize] = useState(16)
-  const [language, setLanguage] = useState('en')
 
   useEffect(() => {
     const savedFontSize = parseInt(localStorage.getItem('fontSize') || '16', 10)
-    const savedLanguage = localStorage.getItem('language') || 'en'
-
     setFontSize(savedFontSize)
-    setLanguage(savedLanguage)
-
     document.documentElement.style.fontSize = `${savedFontSize}px`
   }, [])
 
@@ -24,12 +19,6 @@ const Header = () => {
     setFontSize(newSize)
     document.documentElement.style.fontSize = `${newSize}px`
     localStorage.setItem('fontSize', newSize.toString())
-  }
-
-  const changeLanguage = (lang: string) => {
-    setLanguage(lang)
-    localStorage.setItem('language', lang)
-    // In a real application, you would use a translation library here
   }
 
   return (

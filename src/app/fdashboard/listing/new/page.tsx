@@ -32,22 +32,26 @@ export default function NewListingPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    // Basic email validation (you can improve this)
-    if (!listing.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      console.error('Invalid email address')
-      return
-    }
-
     try {
-      const response = await fetch('https://localhost:8000/fdashboard/listings/addnew/', {
+      const response = await fetch('/api/listings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(listing),
+        body: JSON.stringify({
+          cropName: listing.croptype,
+          quantity: Number(listing.quantity),
+          unit: 'Quintal',
+          expectedPricePerUnit: Number(listing.price),
+          harvestDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+          location: {
+            city: listing.fcity,
+            state: listing.fstate,
+            pincode: listing.fpincode,
+          },
+        }),
       })
 
       if (response.ok) {
-        // Redirect to the Farmer Dashboard after successful submission
-        router.push('/fdashboard')
+        router.push('/fdashboard/listing')
       } else {
         console.error('Failed to submit listing')
       }

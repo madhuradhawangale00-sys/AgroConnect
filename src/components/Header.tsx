@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
-import { Sun, Moon, Languages, ShieldCheck, User as UserIcon, LogOut, Sprout } from "lucide-react";
+import { Sun, Moon, ShieldCheck, User as UserIcon, LogOut, Sprout } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import GoogleTranslate from "@/components/GoogleTranslate";
 import KYCBadge from "@/components/KYCBadge";
@@ -14,8 +14,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-const languages = ["English", "हिन्दी", "मराठी"];
 
 export default function Header() {
   const sessionData = useSession();

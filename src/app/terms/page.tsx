@@ -1,78 +1,56 @@
-import Image from 'next/image'
-import Header from "@/components/layout/header"
-import Footer from "@/components/layout/footer"
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 
 export default function TermsOfService() {
   return (
-    <div className="min-h-screen flex flex-col relative">
-      <div className="absolute inset-0 -z-10">
-        <Image
-          src="/farm-background.jpg"
-          alt="Farm landscape"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
+    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[url('/resources/background1.jpeg')] bg-cover bg-center opacity-15 pointer-events-none" />
+      <div className="absolute inset-0 bg-slate-950/70 pointer-events-none" />
       <Header />
-      <main className="flex-1 container mx-auto px-4 py-16">
-        <div className="bg-white/90 p-8 rounded-lg shadow-lg text-gray-950">
-          <h1 className="text-4xl font-bold mb-8">Terms of Service</h1>
-          <div className="prose max-w-none">
-            <Image
-              src="/placeholder.svg?height=300&width=800"
-              alt="Farmers in a field"
-              width={800}
-              height={300}
-              className="w-full rounded-lg mb-8"
-            />
-            <h2>1. Acceptance of Terms</h2>
-            <p>
-              By accessing and using KisanMitra services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
-            </p>
+      <main className="flex-1 container max-w-4xl mx-auto px-4 py-24 relative z-10">
+        <div className="bg-slate-900/90 border border-slate-800 p-8 rounded-2xl shadow-2xl backdrop-blur-md">
+          <h1 className="text-4xl font-extrabold text-white mb-8 border-b border-slate-800 pb-4">Terms of Service</h1>
+          <div className="space-y-6 text-slate-300 text-sm leading-relaxed">
+            <div>
+              <h2 className="text-xl font-bold text-emerald-400 mb-2">1. Acceptance of Terms</h2>
+              <p>
+                By accessing and using AgroConnect services, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.
+              </p>
+            </div>
 
-            <h2>2. Description of Service</h2>
-            <p>
-              KisanMitra provides a platform for farmers and buyers to engage in smart contract farming. Our services include but are not limited to facilitating transactions, providing market information, and offering tools for crop management.
-            </p>
+            <div>
+              <h2 className="text-xl font-bold text-emerald-400 mb-2">2. Description of Service</h2>
+              <p>
+                AgroConnect provides a transparent digital platform for farmers and corporate buyers to engage in direct contract farming. Our services include crop listings, direct negotiation rooms, automated digital contract generation, and milestone tracking.
+              </p>
+            </div>
 
-            <h2>3. User Obligations</h2>
-            <p>
-              Users of KisanMitra agree to:
-            </p>
-            <ul>
-              <li>Provide accurate and up-to-date information</li>
-              <li>Use the platform for lawful purposes only</li>
-              <li>Respect the rights of other users and third parties</li>
-              <li>Comply with all applicable laws and regulations</li>
-            </ul>
+            <div>
+              <h2 className="text-xl font-bold text-emerald-400 mb-2">3. User Obligations & KYC</h2>
+              <p>
+                Users of AgroConnect agree to:
+              </p>
+              <ul className="list-disc list-inside mt-2 space-y-1 text-slate-400">
+                <li>Provide accurate identity and address verification documents for KYC approval</li>
+                <li>Honor contracted produce quantities, agreed prices, and harvest delivery schedules</li>
+                <li>Use the platform for lawful agricultural trade and fair market negotiation</li>
+                <li>Comply with all applicable Indian agricultural trade laws and contract farming regulations</li>
+              </ul>
+            </div>
 
-            <Image
-              src="/placeholder.svg?height=300&width=800"
-              alt="Digital farming concept"
-              width={800}
-              height={300}
-              className="w-full rounded-lg my-8"
-            />
+            <div>
+              <h2 className="text-xl font-bold text-emerald-400 mb-2">4. Intellectual Property</h2>
+              <p>
+                All content, trademarks, software code, and design materials available on AgroConnect are protected by applicable intellectual property laws.
+              </p>
+            </div>
 
-            <h2>4. Intellectual Property</h2>
-            <p>
-              All content and materials available on KisanMitra, including but not limited to text, graphics, website name, code, images and logos are the intellectual property of KisanMitra and are protected by applicable copyright and trademark law.
-            </p>
-
-            <h2>5. Limitation of Liability</h2>
-            <p>
-              KisanMitra shall not be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the services.
-            </p>
-
-            <h2>6. Governing Law</h2>
-            <p>
-              These Terms shall be governed and construed in accordance with the laws of [Your Country/State], without regard to its conflict of law provisions.
-            </p>
-
-            <h2>7. Changes to Terms</h2>
-            <p>
-              We reserve the right, at our sole discretion, to modify or replace these Terms at any time. We will provide notice of any significant changes to these Terms.
-            </p>
+            <div>
+              <h2 className="text-xl font-bold text-emerald-400 mb-2">5. Limitation of Liability</h2>
+              <p>
+                AgroConnect facilitates direct agreements between verified farmers and buyers. Platform liability is limited to digital contract records and dispute review tools provided to platform users.
+              </p>
+            </div>
           </div>
         </div>
       </main>
@@ -80,4 +58,5 @@ export default function TermsOfService() {
     </div>
   )
 }
+
 

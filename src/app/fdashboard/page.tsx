@@ -78,7 +78,7 @@ export default function DashboardPage() {
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <h1 className="text-3xl font-bold text-white">Welcome, Farmer!</h1>
           <Button asChild className="shadow-[0_4px_8px_rgba(255,255,255)]">
-            <Link href="/fdashboard/listing/new" className="text-white">Create New Listing</Link>
+            <Link href="/fdashboard/listing/add" className="text-white">Create New Listing</Link>
           </Button>
         </div>
 

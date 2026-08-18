@@ -104,6 +104,7 @@ export default function AddProduceListingPage() {
         router.push("/fdashboard/listing");
       }
     } catch (err) {
+      console.error(err);
       setError("An unexpected error occurred.");
     } finally {
       setSubmitting(false);
