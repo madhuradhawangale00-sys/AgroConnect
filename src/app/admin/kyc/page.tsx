@@ -121,7 +121,10 @@ export default function AdminKYCQueuePage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 relative overflow-hidden">
+      {/* Minimal farming background overlay */}
+      <div className="fixed inset-0 -z-10 bg-[url('/resources/background3.jpeg')] bg-cover bg-center opacity-15" />
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-slate-950/80 via-slate-950/90 to-slate-950" />
       <Header />
 
       <main className="flex-1 container max-w-6xl mx-auto px-4 py-24">
