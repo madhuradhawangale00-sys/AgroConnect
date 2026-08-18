@@ -122,67 +122,66 @@ export default function AdminKYCQueuePage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 relative overflow-hidden">
-      {/* Subtle background overlay */}
-      <div className="absolute inset-0 bg-[url('/resources/background3.jpeg')] bg-cover bg-center opacity-10 pointer-events-none" />
-      <div className="absolute inset-0 bg-slate-950/60 pointer-events-none" />
+      {/* Subtle background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900/90 to-slate-950 pointer-events-none" />
       <Header />
 
-      <main className="flex-1 container max-w-6xl mx-auto px-4 py-24">
+      <main className="flex-1 container max-w-6xl mx-auto px-4 py-24 relative z-10">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3">
+            <h1 className="text-3xl font-extrabold tracking-tight text-white flex items-center gap-3">
               <ShieldCheck className="h-8 w-8 text-emerald-400" />
               Admin KYC Approval Queue
             </h1>
-            <p className="text-slate-400 mt-1">
+            <p className="text-slate-300 font-medium mt-1">
               Review submitted farmer & buyer identity documents, grant verified badges, or issue rejection feedback.
             </p>
           </div>
 
-          <Badge className="bg-emerald-950 text-emerald-300 border border-emerald-500/30 px-3 py-1.5 text-sm font-medium flex items-center gap-2">
-            <Users className="h-4 w-4" /> Admin Portal Access
+          <Badge className="bg-emerald-950/80 text-emerald-300 border-2 border-emerald-500/50 px-3.5 py-1.5 text-sm font-bold flex items-center gap-2 shadow-lg">
+            <Users className="h-4 w-4 text-emerald-400" /> Admin Portal Access
           </Badge>
         </div>
 
         {/* Metrics Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-          <Card className="bg-slate-900 border-slate-800">
+          <Card className="bg-slate-900/90 border-2 border-slate-700/80 shadow-xl">
             <CardContent className="pt-6">
-              <p className="text-xs text-slate-400 uppercase font-semibold">Total Submissions</p>
-              <p className="text-3xl font-bold text-white mt-1">{documents.length}</p>
+              <p className="text-xs text-slate-300 uppercase font-black tracking-wider">Total Submissions</p>
+              <p className="text-4xl font-black text-white mt-1">{documents.length}</p>
             </CardContent>
           </Card>
-          <Card className="bg-slate-900 border-slate-800">
+          <Card className="bg-slate-900/90 border-2 border-amber-500/50 shadow-xl">
             <CardContent className="pt-6">
-              <p className="text-xs text-amber-400 uppercase font-semibold">Pending Review</p>
-              <p className="text-3xl font-bold text-amber-300 mt-1">{pendingCount}</p>
+              <p className="text-xs text-amber-400 uppercase font-black tracking-wider">Pending Review</p>
+              <p className="text-4xl font-black text-amber-400 mt-1">{pendingCount}</p>
             </CardContent>
           </Card>
-          <Card className="bg-slate-900 border-slate-800">
+          <Card className="bg-slate-900/90 border-2 border-emerald-500/50 shadow-xl">
             <CardContent className="pt-6">
-              <p className="text-xs text-emerald-400 uppercase font-semibold">Verified Users</p>
-              <p className="text-3xl font-bold text-emerald-300 mt-1">{verifiedCount}</p>
+              <p className="text-xs text-emerald-400 uppercase font-black tracking-wider">Verified Users</p>
+              <p className="text-4xl font-black text-emerald-400 mt-1">{verifiedCount}</p>
             </CardContent>
           </Card>
-          <Card className="bg-slate-900 border-slate-800">
+          <Card className="bg-slate-900/90 border-2 border-rose-500/50 shadow-xl">
             <CardContent className="pt-6">
-              <p className="text-xs text-red-400 uppercase font-semibold">Rejected</p>
-              <p className="text-3xl font-bold text-red-300 mt-1">{rejectedCount}</p>
+              <p className="text-xs text-rose-400 uppercase font-black tracking-wider">Rejected</p>
+              <p className="text-4xl font-black text-rose-400 mt-1">{rejectedCount}</p>
             </CardContent>
           </Card>
         </div>
 
         {/* Filter Tabs */}
-        <div className="flex items-center gap-2 border-b border-slate-800 pb-4 mb-8 overflow-x-auto">
+        <div className="flex items-center gap-3 border-b border-slate-700/80 pb-4 mb-8 overflow-x-auto">
           {["Pending", "Verified", "Rejected", "All"].map((st) => (
             <Button
               key={st}
-              variant={filterStatus === st ? "default" : "ghost"}
+              variant={filterStatus === st ? "default" : "outline"}
               onClick={() => setFilterStatus(st)}
               className={
                 filterStatus === st
-                  ? "bg-emerald-600 hover:bg-emerald-500 text-white"
-                  : "text-slate-400 hover:text-white hover:bg-slate-800"
+                  ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black px-5 shadow-lg shadow-emerald-950/50"
+                  : "bg-slate-900/90 border-slate-700 text-slate-200 hover:text-white hover:bg-slate-800 font-bold px-5"
               }
             >
               {st} {st === "Pending" ? `(${pendingCount})` : st === "Verified" ? `(${verifiedCount})` : st === "Rejected" ? `(${rejectedCount})` : `(${documents.length})`}
@@ -192,30 +191,30 @@ export default function AdminKYCQueuePage() {
 
         {/* Documents Queue List */}
         {filteredDocs.length === 0 ? (
-          <Card className="bg-slate-900 border-slate-800 py-16 text-center">
+          <Card className="bg-slate-900/90 border-2 border-slate-700/80 py-16 text-center shadow-2xl">
             <CardContent className="flex flex-col items-center gap-3">
-              <AlertCircle className="h-12 w-12 text-slate-600" />
-              <p className="text-lg font-medium text-slate-300">No {filterStatus} KYC submissions found.</p>
-              <p className="text-sm text-slate-500">All submitted documents in this category have been processed.</p>
+              <AlertCircle className="h-14 w-14 text-emerald-400" />
+              <p className="text-xl font-extrabold text-white">No {filterStatus} KYC submissions found.</p>
+              <p className="text-sm font-semibold text-slate-300">All submitted documents in this category have been processed.</p>
             </CardContent>
           </Card>
         ) : (
           <div className="grid md:grid-cols-2 gap-6">
             {filteredDocs.map((doc) => (
-              <Card key={doc._id} className="bg-slate-900 border-slate-800 flex flex-col justify-between">
+              <Card key={doc._id} className="bg-slate-900/90 border-2 border-slate-700/80 shadow-2xl flex flex-col justify-between hover:border-emerald-500/50 transition-all">
                 <CardHeader className="pb-3">
                   <div className="flex items-start justify-between">
                     <div>
-                      <CardTitle className="text-lg text-white font-bold">{doc.userName || "User"}</CardTitle>
-                      <p className="text-xs text-slate-400">{doc.userEmail}</p>
+                      <CardTitle className="text-xl text-white font-extrabold">{doc.userName || "User"}</CardTitle>
+                      <p className="text-xs text-slate-300 font-medium">{doc.userEmail}</p>
                     </div>
                     <KYCBadge status={doc.status} />
                   </div>
-                  <div className="flex items-center gap-2 mt-2">
-                    <Badge variant="outline" className="border-slate-700 text-slate-300">
+                  <div className="flex items-center gap-2 mt-3">
+                    <Badge variant="outline" className="border-slate-600 bg-slate-800/80 text-slate-100 font-bold">
                       Role: {doc.userRole || "Farmer"}
                     </Badge>
-                    <Badge variant="outline" className="border-slate-700 text-slate-300">
+                    <Badge variant="outline" className="border-slate-600 bg-slate-800/80 text-slate-100 font-bold">
                       ID: {doc.idProofType} ({doc.idProofNumber || "N/A"})
                     </Badge>
                   </div>
@@ -224,35 +223,35 @@ export default function AdminKYCQueuePage() {
                 <CardContent className="space-y-4">
                   {/* Proof Thumbnails */}
                   <div className="grid grid-cols-2 gap-3">
-                    <div className="bg-slate-950 p-2 rounded-lg border border-slate-800 text-center">
-                      <p className="text-xs font-medium text-slate-400 mb-1">ID Proof ({doc.idProofType})</p>
+                    <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-700 text-center">
+                      <p className="text-xs font-bold text-slate-300 mb-1.5">ID Proof ({doc.idProofType})</p>
                       <img
                         src={doc.idProofUrl}
                         alt="ID Proof"
-                        className="h-28 w-full object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
+                        className="h-32 w-full object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity border border-slate-800"
                         onClick={() => setPreviewImage(doc.idProofUrl)}
                       />
                     </div>
-                    <div className="bg-slate-950 p-2 rounded-lg border border-slate-800 text-center">
-                      <p className="text-xs font-medium text-slate-400 mb-1">Address Proof</p>
+                    <div className="bg-slate-950 p-2.5 rounded-xl border border-slate-700 text-center">
+                      <p className="text-xs font-bold text-slate-300 mb-1.5">Address Proof</p>
                       <img
                         src={doc.addressProofUrl}
                         alt="Address Proof"
-                        className="h-28 w-full object-cover rounded cursor-pointer hover:opacity-80 transition-opacity"
+                        className="h-32 w-full object-cover rounded-lg cursor-pointer hover:opacity-90 transition-opacity border border-slate-800"
                         onClick={() => setPreviewImage(doc.addressProofUrl)}
                       />
                     </div>
                   </div>
 
                   {doc.rejectionReason && (
-                    <div className="p-3 bg-red-950/40 border border-red-800/60 rounded text-xs text-red-300">
-                      <span className="font-semibold">Rejection Note:</span> {doc.rejectionReason}
+                    <div className="p-3 bg-red-950/60 border border-red-500/60 rounded-lg text-xs text-red-200 font-medium">
+                      <span className="font-bold text-rose-300">Rejection Note:</span> {doc.rejectionReason}
                     </div>
                   )}
                 </CardContent>
 
-                <div className="p-4 border-t border-slate-800 flex items-center justify-between gap-3 bg-slate-950/50 rounded-b-xl">
-                  <span className="text-xs text-slate-500">
+                <div className="p-4 border-t border-slate-700/80 flex items-center justify-between gap-3 bg-slate-950/80 rounded-b-xl">
+                  <span className="text-xs text-slate-300 font-mono font-medium">
                     Submitted: {new Date(doc.createdAt).toLocaleDateString()}
                   </span>
 
@@ -260,24 +259,24 @@ export default function AdminKYCQueuePage() {
                     <Button
                       size="sm"
                       variant="outline"
-                      className="border-slate-700 text-slate-300 hover:text-white"
+                      className="bg-rose-950/80 border-2 border-rose-500/80 text-rose-300 hover:bg-rose-900 hover:text-white font-extrabold"
                       onClick={() => {
                         setSelectedDoc(doc);
                         setReviewAction("Rejected");
                         setRejectionReason(doc.rejectionReason || "");
                       }}
                     >
-                      <XCircle className="h-4 w-4 mr-1 text-red-400" /> Reject
+                      <XCircle className="h-4 w-4 mr-1 text-rose-400" /> Reject
                     </Button>
                     <Button
                       size="sm"
-                      className="bg-emerald-600 hover:bg-emerald-500 text-white"
+                      className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black shadow-lg"
                       onClick={() => {
                         setSelectedDoc(doc);
                         setReviewAction("Verified");
                       }}
                     >
-                      <CheckCircle2 className="h-4 w-4 mr-1" /> Approve Badge
+                      <CheckCircle2 className="h-4 w-4 mr-1 text-slate-950" /> Approve Badge
                     </Button>
                   </div>
                 </div>
@@ -288,52 +287,52 @@ export default function AdminKYCQueuePage() {
 
         {/* Full Image Preview Modal */}
         <Dialog open={!!previewImage} onOpenChange={() => setPreviewImage(null)}>
-          <DialogContent className="bg-slate-900 border-slate-800 max-w-3xl">
+          <DialogContent className="bg-slate-900 border-2 border-slate-700 max-w-3xl">
             <DialogHeader>
-              <DialogTitle className="text-white">Document Preview</DialogTitle>
+              <DialogTitle className="text-white font-extrabold text-xl">Document Preview</DialogTitle>
             </DialogHeader>
             {previewImage && (
-              <img src={previewImage} alt="Document Full View" className="max-h-[70vh] w-full object-contain rounded-lg" />
+              <img src={previewImage} alt="Document Full View" className="max-h-[70vh] w-full object-contain rounded-lg border border-slate-700" />
             )}
           </DialogContent>
         </Dialog>
 
         {/* Review Action Confirmation Modal */}
         <Dialog open={!!selectedDoc} onOpenChange={() => setSelectedDoc(null)}>
-          <DialogContent className="bg-slate-900 border-slate-800 text-slate-100 max-w-md">
+          <DialogContent className="bg-slate-900 border-2 border-slate-700 text-slate-100 max-w-md shadow-2xl">
             <DialogHeader>
-              <DialogTitle className="text-white">
+              <DialogTitle className="text-white font-extrabold text-xl">
                 {reviewAction === "Verified" ? "Approve KYC Verification" : "Reject KYC Application"}
               </DialogTitle>
-              <DialogDescription className="text-slate-400">
-                Applicant: <span className="text-white font-medium">{selectedDoc?.userName}</span> ({selectedDoc?.userEmail})
+              <DialogDescription className="text-slate-300 font-medium">
+                Applicant: <span className="text-white font-bold">{selectedDoc?.userName}</span> ({selectedDoc?.userEmail})
               </DialogDescription>
             </DialogHeader>
 
             {reviewAction === "Verified" ? (
-              <p className="text-sm text-slate-300">
-                Approving this KYC application will grant a green <span className="text-emerald-400 font-semibold">"KYC Verified"</span> badge on this user's profile and produce listings.
+              <p className="text-sm text-slate-200 font-medium">
+                Approving this KYC application will grant a green <span className="text-emerald-400 font-bold">"KYC Verified"</span> badge on this user's profile and produce listings.
               </p>
             ) : (
               <div className="space-y-2">
-                <label className="text-sm text-slate-300 font-medium">Rejection Reason Feedback</label>
+                <label className="text-sm text-slate-200 font-bold">Rejection Reason Feedback</label>
                 <Textarea
                   value={rejectionReason}
                   onChange={(e) => setRejectionReason(e.target.value)}
                   placeholder="Explain why the identity document was rejected (e.g. Blurry photo, name mismatch)..."
-                  className="bg-slate-800 border-slate-700 text-white text-sm min-h-[100px]"
+                  className="bg-slate-950 border-slate-700 text-white placeholder:text-slate-400 text-sm min-h-[100px]"
                 />
               </div>
             )}
 
             <DialogFooter className="mt-4 gap-2">
-              <Button variant="ghost" onClick={() => setSelectedDoc(null)} disabled={processing}>
+              <Button variant="ghost" onClick={() => setSelectedDoc(null)} disabled={processing} className="text-slate-300 hover:text-white">
                 Cancel
               </Button>
               <Button
                 onClick={handleReviewSubmit}
                 disabled={processing || (reviewAction === "Rejected" && !rejectionReason.trim())}
-                className={reviewAction === "Verified" ? "bg-emerald-600 hover:bg-emerald-500 text-white" : "bg-red-600 hover:bg-red-500 text-white"}
+                className={reviewAction === "Verified" ? "bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-black" : "bg-rose-600 hover:bg-rose-500 text-white font-bold"}
               >
                 {processing ? (
                   <span className="flex items-center gap-2">
