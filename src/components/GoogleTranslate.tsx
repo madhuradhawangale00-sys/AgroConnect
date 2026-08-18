@@ -63,6 +63,19 @@ export default function GoogleTranslate() {
         }
       };
     }
+
+    // Interval to remove Google Translate iframe banner if dynamically created
+    const interval = setInterval(() => {
+      const banner = document.querySelector(".goog-te-banner-frame") || document.querySelector("iframe[class*='VIpgJd']");
+      if (banner) {
+        banner.remove();
+      }
+      if (document.body.style.top !== "0px") {
+        document.body.style.top = "0px";
+      }
+    }, 500);
+
+    return () => clearInterval(interval);
   }, []);
 
   const changeLanguage = (langCode: string) => {
