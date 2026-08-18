@@ -34,8 +34,8 @@ const SidebarContent: React.FC<{ children: ReactNode }> = ({ children }) => (
   <div className="p-4">{children}</div>
 );
 
-const SidebarHeader: React.FC<{ children: ReactNode }> = ({ children }) => (
-  <div className="text-2xl font-bold p-4 border-b border-gray-700">{children}</div>
+const SidebarHeader: React.FC<{ children: ReactNode; className?: string }> = ({ children, className }) => (
+  <div className={`p-4 border-b border-gray-700 ${className || ''}`}>{children}</div>
 );
 
 const SidebarGroup: React.FC<{ children: ReactNode }> = ({ children }) => (

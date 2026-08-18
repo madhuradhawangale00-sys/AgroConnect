@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Languages } from "lucide-react";
+import { Languages, Globe, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -9,161 +9,138 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useLanguage } from "@/components/LanguageContext";
+import { LANGUAGES, LanguageCode } from "@/lib/i18n";
 
-declare global {
-  interface Window {
-    googleTranslateElementInit?: () => void;
-    google?: any;
-  }
+interface GoogleTranslateProps {
+  variant?: "dropdown" | "compact" | "floating";
+  className?: string;
 }
 
-const LANGUAGES = [
-  { code: "en", label: "English" },
-  { code: "hi", label: "हिन्दी (Hindi)" },
-  { code: "mr", label: "मराठी (Marathi)" },
-];
-
-export default function GoogleTranslate() {
-  const [currentLang, setCurrentLang] = useState<string>("en");
+export default function GoogleTranslate({ variant = "dropdown", className = "" }: GoogleTranslateProps) {
+  const { currentLang, changeLanguage } = useLanguage();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // Check initial cookie
-    const getCookie = (name: string) => {
-      const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
-      return match ? match[2] : null;
-    };
-
-    const googtrans = getCookie("googtrans");
-    if (googtrans) {
-      const code = googtrans.split("/").pop();
-      if (code && ["en", "hi", "mr"].includes(code)) {
-        setCurrentLang(code);
-      }
-    }
-
-    // Add Google Translate script if not already added
-    window.googleTranslateElementInit = () => {
-      if (window.google && window.google.translate) {
-        new window.google.translate.TranslateElement(
-          {
-            pageLanguage: "en",
-            includedLanguages: "en,hi,mr",
-            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-            autoDisplay: false,
-          },
-          "google_translate_element"
-        );
-      }
-    };
-
-    if (!document.getElementById("google-translate-script")) {
-      const script = document.createElement("script");
-      script.id = "google-translate-script";
-      script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-      script.async = true;
-      script.onerror = (e) => {
-        console.warn("Google Translate script failed to load gracefully", e);
-      };
-      document.body.appendChild(script);
-    } else if (window.google && window.google.translate) {
-      window.googleTranslateElementInit();
-    }
-
-    // Suppress raw browser script Event unhandled rejection overlays in dev mode
-    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      if (event.reason instanceof Event || (event.reason && typeof event.reason === "object" && "type" in event.reason && !("message" in event.reason))) {
-        event.preventDefault();
-      }
-    };
-    window.addEventListener("unhandledrejection", handleUnhandledRejection);
-
-    // Remove Google Translate banner frames and top margin overrides
-    const interval = setInterval(() => {
-      const banner = document.querySelector(".goog-te-banner-frame") || document.querySelector("iframe[class*='VIpgJd']");
-      if (banner) {
-        banner.remove();
-      }
-      if (document.body.style.top !== "0px") {
-        document.body.style.top = "0px";
-      }
-    }, 500);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener("unhandledrejection", handleUnhandledRejection);
-    };
+    setMounted(true);
   }, []);
 
-  const changeLanguage = (langCode: string) => {
-    setCurrentLang(langCode);
-
-    // Set googletranslate cookie
-    document.cookie = `googtrans=/en/${langCode}; path=/`;
-    document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
-
-    // Trigger select element inside google translate container
-    const selectEl = document.querySelector(".goog-te-combo") as HTMLSelectElement | null;
-    if (selectEl) {
-      selectEl.value = langCode;
-      selectEl.dispatchEvent(new Event("change"));
-    } else {
-      window.location.reload();
-    }
-  };
+  const activeLangObj = LANGUAGES.find((l) => l.code === currentLang) || LANGUAGES[0];
+  const displayLabel = mounted ? activeLangObj.label : LANGUAGES[0].label;
+  const displayShort = mounted ? activeLangObj.short : LANGUAGES[0].short;
 
   return (
-    <div className="relative inline-block">
-      {/* Offscreen container so Google Translate can instantiate .goog-te-combo */}
-      <div id="google_translate_element" className="absolute top-0 left-0 opacity-0 pointer-events-none w-0 h-0 overflow-hidden" />
-
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-700/60 font-medium"
-          >
-            <Languages className="h-4 w-4 text-emerald-400" />
-            <span className="text-xs font-semibold">
-              {LANGUAGES.find((l) => l.code === currentLang)?.label || "Language"}
-            </span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="bg-slate-900 border-2 border-slate-700 text-slate-100 min-w-[160px] shadow-2xl z-50">
-          {LANGUAGES.map((lang) => (
-            <DropdownMenuItem
-              key={lang.code}
-              onClick={() => changeLanguage(lang.code)}
-              className={`hover:bg-slate-800 cursor-pointer font-medium flex items-center justify-between text-xs py-2.5 px-3 ${
-                currentLang === lang.code ? "text-emerald-400 font-extrabold bg-slate-800/80" : "text-slate-200"
-              }`}
+    <div className={`relative inline-block ${className}`} suppressHydrationWarning>
+      {variant === "floating" ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              size="sm"
+              className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-2xl rounded-full px-3.5 py-2 flex items-center gap-2 border-2 border-emerald-400/50 backdrop-blur-md"
             >
-              <span>{lang.label}</span>
-              {currentLang === lang.code && <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm" />}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      {/* Global CSS overrides to hide Google Translate banner frame & top bar */}
-      <style jsx global>{`
-        .goog-te-banner-frame {
-          display: none !important;
-        }
-        body {
-          top: 0px !important;
-        }
-        .goog-te-gadget {
-          display: none !important;
-        }
-        .goog-tooltip {
-          display: none !important;
-        }
-        .goog-text-highlight {
-          background-color: transparent !important;
-          box-shadow: none !important;
-        }
-      `}</style>
+              <Globe className="h-4 w-4 animate-pulse text-emerald-200" />
+              <span className="text-xs tracking-wide" suppressHydrationWarning>
+                {displayLabel.split(" ")[0]}
+              </span>
+              <ChevronDown className="h-3 w-3 opacity-80" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            side="top"
+            className="bg-slate-900 border-2 border-slate-700 text-slate-100 min-w-[190px] max-h-[320px] overflow-y-auto shadow-2xl z-[9999]"
+          >
+            <div className="px-3 py-2 text-[11px] font-bold uppercase text-emerald-400 border-b border-slate-800 tracking-wider">
+              Select Language / भाषा चुनें
+            </div>
+            {LANGUAGES.map((lang) => (
+              <DropdownMenuItem
+                key={lang.code}
+                onClick={() => changeLanguage(lang.code as LanguageCode)}
+                className={`hover:bg-slate-800 cursor-pointer font-medium flex items-center justify-between text-xs py-2 px-3 ${
+                  mounted && currentLang === lang.code ? "text-emerald-400 font-extrabold bg-slate-800/80" : "text-slate-200"
+                }`}
+              >
+                <span>{lang.label}</span>
+                {mounted && currentLang === lang.code && (
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm" />
+                )}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : variant === "compact" ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-slate-200 hover:text-white hover:bg-slate-800/80 flex items-center gap-1 px-2 py-1 rounded-md border border-slate-700/60 font-semibold text-xs"
+            >
+              <Languages className="h-3.5 w-3.5 text-emerald-400" />
+              <span suppressHydrationWarning>{displayShort}</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            className="bg-slate-900 border-2 border-slate-700 text-slate-100 min-w-[180px] max-h-[320px] overflow-y-auto shadow-2xl z-50"
+          >
+            {LANGUAGES.map((lang) => (
+              <DropdownMenuItem
+                key={lang.code}
+                onClick={() => changeLanguage(lang.code as LanguageCode)}
+                className={`hover:bg-slate-800 cursor-pointer font-medium flex items-center justify-between text-xs py-2 px-3 ${
+                  mounted && currentLang === lang.code ? "text-emerald-400 font-extrabold bg-slate-800/80" : "text-slate-200"
+                }`}
+              >
+                <span>{lang.label}</span>
+                {mounted && currentLang === lang.code && (
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm" />
+                )}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-700/60 font-medium"
+            >
+              <Languages className="h-4 w-4 text-emerald-400" />
+              <span className="text-xs font-semibold" suppressHydrationWarning>
+                {displayLabel}
+              </span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent
+            align="end"
+            className="bg-slate-900 border-2 border-slate-700 text-slate-100 min-w-[180px] max-h-[340px] overflow-y-auto shadow-2xl z-50"
+          >
+            <div className="px-3 py-1.5 text-[10px] font-bold uppercase text-slate-400 border-b border-slate-800 tracking-wider">
+              Language / भाषा
+            </div>
+            {LANGUAGES.map((lang) => (
+              <DropdownMenuItem
+                key={lang.code}
+                onClick={() => changeLanguage(lang.code as LanguageCode)}
+                className={`hover:bg-slate-800 cursor-pointer font-medium flex items-center justify-between text-xs py-2 px-3 ${
+                  mounted && currentLang === lang.code ? "text-emerald-400 font-extrabold bg-slate-800/80" : "text-slate-200"
+                }`}
+              >
+                <span>{lang.label}</span>
+                {mounted && currentLang === lang.code && (
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm" />
+                )}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
     </div>
   );
 }
+
+

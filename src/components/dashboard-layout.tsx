@@ -8,6 +8,7 @@ import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGrou
 import {LayoutDashboard, FileCodeIcon as FileContract, Cloud, Sprout, Award, Truck } from 'lucide-react';
 import Header from '@/components/layout/header';  
 import Footer from '@/components/Footer';
+import GoogleTranslate from '@/components/GoogleTranslate';
 
 const navItems = [
   { href: '/fdashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -29,12 +30,15 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
     <SidebarProvider>
       <div className="flex flex-col min-h-screen">
         <Header />
-        <div className="flex flex-1">
+        <div className="flex flex-1 pt-16">
           <Sidebar className="hidden md:block bg-background/80 backdrop-blur-sm">
-            <SidebarHeader>
+            <SidebarHeader className="border-b border-slate-800 pb-2">
               <Link href="/" className="flex items-center space-x-2 px-4 py-2">
                 <span className="text-2xl font-bold">AgroConnect</span>
               </Link>
+              <div className="px-4 pt-1 pb-2">
+                <GoogleTranslate variant="dropdown" />
+              </div>
             </SidebarHeader>
             <SidebarContent>
               <SidebarGroup>
@@ -57,9 +61,11 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
             </SidebarContent>
           </Sidebar>
           <div className="flex flex-1 flex-col">
-            <header className="flex h-16 items-center justify-between border-b px-4">
+            <header className="flex h-14 items-center justify-between border-b px-4 bg-slate-950/60 backdrop-blur-md">
               <SidebarTrigger className="md:hidden" />
-              
+              <div className="flex items-center gap-2 ml-auto">
+                <GoogleTranslate variant="compact" />
+              </div>
             </header>
             <main className="flex-1 overflow-auto p-4 bg-background/80 backdrop-blur-sm">
               <div className="mx-auto max-w-4xl">{children}</div>
@@ -71,3 +77,4 @@ export function DashboardLayout({ children }: { children: ReactNode }) {
     </SidebarProvider>
   );
 }
+

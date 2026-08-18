@@ -26,13 +26,16 @@ export default function NotificationBell() {
     const loadNotifications = async () => {
       try {
         const res = await fetch("/api/notifications");
+        if (!res.ok) return;
+        const contentType = res.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) return;
         const data = await res.json();
-        if (data.success) {
+        if (data && data.success) {
           setNotifications(data.notifications || []);
           setUnreadCount(data.unreadCount || 0);
         }
       } catch (err) {
-        console.error(err);
+        // Silently catch network or parsing errors during polling
       }
     };
 
@@ -43,15 +46,17 @@ export default function NotificationBell() {
 
   const handleMarkAllRead = async () => {
     try {
-      await fetch("/api/notifications", {
+      const res = await fetch("/api/notifications", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ markAllRead: true }),
       });
-      setUnreadCount(0);
-      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+      if (res.ok) {
+        setUnreadCount(0);
+        setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+      }
     } catch (err) {
-      console.error(err);
+      // Ignore
     }
   };
 

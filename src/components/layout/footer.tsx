@@ -112,7 +112,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="container py-4 border-t border-white/10 relative z-10">
-        <p className="text-sm text-center text-slate-300">
+        <p className="text-sm text-center text-slate-300" suppressHydrationWarning>
           © {new Date().getFullYear()} AgroConnect. All rights reserved.
         </p>
       </div>
