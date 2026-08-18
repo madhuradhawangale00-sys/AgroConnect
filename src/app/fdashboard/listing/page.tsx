@@ -1,168 +1,220 @@
-'use client'
+"use client";
 
-import { useState, useEffect } from 'react'
-import { Listing, Bid } from '@/app/fdashboard/listing/types'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import KYCBadge from "@/components/KYCBadge";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Plus, Trash2, Calendar, MapPin, Tag, Loader2, Sprout, ArrowRight } from "lucide-react";
+import Link from "next/link";
 
+export default function MyFarmerListingsPage() {
+  const { data: session, status: sessionStatus } = useSession();
+  const router = useRouter();
 
-export default function FarmerDashboard() {
-  const [listings, setListings] = useState<Listing[]>([])  // Empty initially
-  // const [selectedBid, setSelectedBid] = useState<Bid | null>(null)
-  const [showContractDialog, setShowContractDialog] = useState(false)
-  // const [contractDetails, setContractDetails] = useState({ deliveryDate: '', paymentTerms: '', additionalNotes: '' })
-  const [loading, setLoading] = useState(true) // Loading state
-  const [error, setError] = useState<string | null>(null)
-  const [email, setEmail] = useState<string | null>(null)  // Store email here
-
-  // Use useEffect to safely access localStorage on the client-side
-  useEffect(() => {
-    const storedEmail = localStorage.getItem("email")
-    if (storedEmail) {
-      setEmail(storedEmail)
-    } else {
-      setError('No email found in localStorage')
-    }
-  }, [])
+  const [listings, setListings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (email) {
-      const fetchListings = async () => {
-        try {
-          const response = await fetch(`https://7kwg8g5n-8000.inc1.devtunnels.ms/fdashboard/listings/view/${email}`)
-          if (!response.ok) {
-            throw new Error('Failed to fetch listings')
-          }
-          const data: Listing[] = await response.json()
-          setListings(data)
-        } catch (error) {
-          setError('Error fetching listings: ' + error)
-          console.log("error")
-        } finally {
-          setLoading(false)
-        }
-      }
-
-      fetchListings()
+    if (sessionStatus === "unauthenticated") {
+      router.push("/login");
+      return;
     }
-  }, [email])
-
-  const handleStatusChange = (listingId: string, bidIndex: number, newStatus: Bid['status']) => {
-    setListings(currentListings =>
-      currentListings.map(listing =>
-        listing._id === listingId
-          ? {
-              ...listing,
-              bids: listing.bids.map((bid, index) =>
-                index === bidIndex ? { ...bid, status: newStatus } : bid
-              )
-            }
-          : listing
-      )
-    )
-
-    if (newStatus === 'accepted') {
-      const listing = listings.find(l => l._id === listingId)
-      const bid = listing?.bids[bidIndex]
-      if (bid) {
-        // setSelectedBid(bid)
-        setShowContractDialog(true)
-      }
+    if (sessionStatus === "authenticated") {
+      fetchMyListings();
     }
-  }
+  }, [sessionStatus]);
 
-  // const handleContractSubmit = (e: React.FormEvent) => {
-  //   e.preventDefault()
-  //   console.log('Contract details:', { ...contractDetails, bid: selectedBid })
-  //   setShowContractDialog(false)
-  //   setContractDetails({ deliveryDate: '', paymentTerms: '', additionalNotes: '' })
-  // }
+  const fetchMyListings = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch("/api/listings?myListings=true");
+      const data = await res.json();
+      if (data.success) {
+        setListings(data.listings || []);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  if (loading) {
-    return <div>Loading...</div>
-  }
+  const handleDelete = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this produce listing?")) return;
 
-  if (error) {
-    return <div>Error: {error}</div>
-  }
+    try {
+      setDeletingId(id);
+      const res = await fetch(`/api/listings?id=${id}`, { method: "DELETE" });
+      const data = await res.json();
+      if (data.success) {
+        setListings((prev) => prev.filter((item) => item._id !== id));
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
+  const kycStatus = (session?.user as any)?.kycStatus || "Not Submitted";
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4 text-white">My Listing</h1>
-      {listings.length === 0 ? (
-        <div>No listings available</div>
-      ) : (
-        listings.map(listing => (
-          <Card key={listing._id} className="mb-6 bg-white text-black shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
-            <CardHeader>
-              <CardTitle className="text-black">{listing.croptype}</CardTitle>
-              <CardDescription className="text-black">
-                Quantity: {listing.quantity} | Price: ₹{listing.price}/unit
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-black">
-              <p>Cropping Time: {listing.croppingtime}</p>
-              <p>Harvesting Time: {listing.harvestingtime}</p>
-              <p>Location: {listing.fcity}, {listing.fstate} - {listing.fpincode}</p>
-              <h3 className="font-semibold mt-4 mb-2">Bids:</h3>
-              {Array.isArray(listing.bids) && listing.bids.length > 0 ? (
-                listing.bids.map((bid, index) => (
-                  <Card key={index} className="mb-2 bg-white text-black shadow-[0_4px_8px_rgba(0,0,0,0.1)]">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-center">
-                        <div>
-                          <p><strong>{bid.buyerName}</strong></p>
-                          <p>Offered: ₹{bid.cropPrice} for {listing.quantity} units</p>
-                        </div>
-                        <Badge>{bid.status}</Badge>
-                      </div>
-                      {bid.status === 'pending' && (
-                        <div className="flex justify-end mt-2 space-x-2">
-                          <Button onClick={() => handleStatusChange(listing._id, index, 'rejected')} variant="outline" className="text-white border-black hover:bg-black hover:text-white shadow-[0_2px_4px_rgba(0,0,0,0.2)]">Reject</Button>
-                          <Button onClick={() => handleStatusChange(listing._id, index, 'negotiating')} variant="outline" className="text-white border-black hover:bg-black hover:text-white shadow-[0_2px_4px_rgba(0,0,0,0.2)]">Negotiate</Button>
-                          <Button onClick={() => handleStatusChange(listing._id, index, 'accepted')} variant="outline" className="text-white border-black hover:bg-black hover:text-white shadow-[0_2px_4px_rgba(0,0,0,0.2)]">Accept</Button>
-                        </div>
-                      )}
-                      {bid.status === 'negotiating' && (
-                        <div className="mt-2">
-                          <p className="mb-2">Buyer phone: {bid.bmobile}</p>
-                          <div className="flex justify-end space-x-2">
-                            <Button onClick={() => handleStatusChange(listing._id, index, 'rejected')} variant="outline" className="text-white border-black hover:bg-black hover:text-white shadow-[0_2px_4px_rgba(0,0,0,0.2)]">Reject</Button>
-                            <Button onClick={() => handleStatusChange(listing._id, index, 'accepted')} variant="outline" className="text-white border-black hover:bg-black hover:text-white shadow-[0_2px_4px_rgba(0,0,0,0.2)]">Accept</Button>
-                          </div>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))
-              ) : (
-                <p>No bids available</p>
-              )}
+    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+      <Header />
+
+      <main className="flex-1 container max-w-6xl mx-auto px-4 py-24">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+          <div>
+            <div className="flex items-center gap-3 mb-1">
+              <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-2">
+                <Sprout className="h-8 w-8 text-emerald-400" />
+                My Produce Listings
+              </h1>
+              <KYCBadge status={kycStatus} />
+            </div>
+            <p className="text-slate-400">
+              Manage your active crop listings, view negotiation status, and track contracts with buyers.
+            </p>
+          </div>
+
+          <Link href="/fdashboard/listing/add">
+            <Button className="bg-emerald-600 hover:bg-emerald-500 text-white font-medium shadow-lg flex items-center gap-2">
+              <Plus className="h-4 w-4" /> Add New Produce Listing
+            </Button>
+          </Link>
+        </div>
+
+        {/* Listings List */}
+        {loading ? (
+          <div className="flex items-center justify-center py-20 text-slate-400">
+            <Loader2 className="h-6 w-6 animate-spin text-emerald-400 mr-2" /> Loading produce listings...
+          </div>
+        ) : listings.length === 0 ? (
+          <Card className="bg-slate-900 border-slate-800 text-center py-16">
+            <CardContent className="flex flex-col items-center gap-4">
+              <div className="p-4 bg-slate-800 rounded-full text-slate-400">
+                <Sprout className="h-10 w-10 text-emerald-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-white">No Produce Listings Created Yet</h3>
+              <p className="text-slate-400 max-w-md text-sm">
+                List your upcoming harvests (wheat, paddy, cotton, vegetables) to receive price offers and sign digital farming contracts.
+              </p>
+              <Link href="/fdashboard/listing/add">
+                <Button className="bg-emerald-600 hover:bg-emerald-500 text-white mt-2">
+                  Create First Crop Listing
+                </Button>
+              </Link>
             </CardContent>
           </Card>
-        ))
-      )}
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {listings.map((item) => (
+              <Card key={item._id} className="bg-slate-900 border-slate-800 flex flex-col justify-between overflow-hidden group hover:border-slate-700 transition-colors">
+                <div>
+                  {/* Image Banner */}
+                  <div className="h-44 w-full bg-slate-950 relative overflow-hidden">
+                    <img
+                      src={item.images?.[0] || "/resources/card1.png"}
+                      alt={item.cropName}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute top-3 right-3">
+                      <Badge
+                        className={
+                          item.status === "Active"
+                            ? "bg-emerald-600 text-white"
+                            : item.status === "Under Negotiation"
+                            ? "bg-amber-500 text-white"
+                            : item.status === "Contracted"
+                            ? "bg-blue-600 text-white"
+                            : "bg-slate-700 text-white"
+                        }
+                      >
+                        {item.status}
+                      </Badge>
+                    </div>
+                  </div>
 
-<Dialog open={showContractDialog} onOpenChange={setShowContractDialog}>
-  <DialogContent className="bg-white text-black">
-    <div className="flex flex-col items-center justify-center text-center py-12">
-      <h2 className="text-2xl font-semibold">Contract Created</h2>
-      <p className="text-lg text-gray-700 mt-2">
-        The contract has been successfully created and is now available in the system.
-      </p>
-      <Button
-        onClick={() => setShowContractDialog(false)}
-        className="mt-6 text-white bg-black hover:bg-black shadow-[0_2px_4px_rgba(0,0,0,0.2)]"
-      >
-        Close
-      </Button>
+                  <CardHeader className="pb-2">
+                    <CardTitle className="text-xl text-white font-bold">{item.cropName}</CardTitle>
+                    {item.variety && (
+                      <CardDescription className="text-emerald-400 text-xs font-medium">
+                        Variety: {item.variety}
+                      </CardDescription>
+                    )}
+                  </CardHeader>
+
+                  <CardContent className="space-y-2 text-sm text-slate-300 pb-4">
+                    <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                      <span className="text-slate-400 flex items-center gap-1.5">
+                        <Tag className="h-4 w-4 text-slate-500" /> Expected Price:
+                      </span>
+                      <span className="text-white font-bold text-base">
+                        ₹{item.expectedPricePerUnit} / {item.unit || "Quintal"}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-400">Total Quantity:</span>
+                      <span className="text-slate-200 font-medium">{item.quantity} {item.unit || "Quintal"}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-400 flex items-center gap-1.5">
+                        <Calendar className="h-4 w-4 text-slate-500" /> Harvest Date:
+                      </span>
+                      <span className="text-slate-200 font-medium">
+                        {new Date(item.harvestDate).toLocaleDateString()}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-slate-400 flex items-center gap-1.5">
+                        <MapPin className="h-4 w-4 text-slate-500" /> Location:
+                      </span>
+                      <span className="text-slate-200 font-medium truncate max-w-[160px]">
+                        {item.location?.city || item.fcity}, {item.location?.state || item.fstate}
+                      </span>
+                    </div>
+                  </CardContent>
+                </div>
+
+                <div className="p-4 border-t border-slate-800 flex items-center justify-between gap-2 bg-slate-950/40">
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-red-400 hover:text-red-300 hover:bg-red-950/30"
+                    disabled={deletingId === item._id}
+                    onClick={() => handleDelete(item._id)}
+                  >
+                    {deletingId === item._id ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <>
+                        <Trash2 className="h-4 w-4 mr-1" /> Delete
+                      </>
+                    )}
+                  </Button>
+
+                  <Link href={`/listings/${item._id}`}>
+                    <Button size="sm" variant="outline" className="border-slate-700 text-slate-300 hover:text-white">
+                      View Details <ArrowRight className="h-3.5 w-3.5 ml-1" />
+                    </Button>
+                  </Link>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
+      </main>
+
+      <Footer />
     </div>
-  </DialogContent>
-</Dialog>
-
-
-    </div>
-  )
+  );
 }
