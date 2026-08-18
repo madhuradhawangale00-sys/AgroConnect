@@ -193,7 +193,7 @@ export default function ContractDetailPage() {
                 <span className="text-2xl font-black tracking-tight text-white print:text-black">AgroConnect</span>
               </div>
               <p className="text-xs text-slate-400 print:text-gray-600 font-mono">
-                Official Digital Contract Farming Agreement (SIH 2024 Workflow)
+                Official Digital Contract Farming Agreement
               </p>
             </div>
 

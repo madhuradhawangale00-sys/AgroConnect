@@ -16,7 +16,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "AgroConnect - Contract Farming Marketplace (SIH 1640)",
+  title: "AgroConnect - Contract Farming Marketplace",
   description: "Digital contract farming marketplace connecting farmers directly with corporate buyers.",
 };
 

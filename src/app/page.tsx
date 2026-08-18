@@ -19,7 +19,7 @@ export default function Home() {
 
         <div className="container max-w-5xl mx-auto px-4 relative z-10 text-center space-y-6 py-16">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-xs font-semibold uppercase tracking-wider shadow-lg">
-            <Sprout className="h-4 w-4" /> SIH 2024 Problem Statement 1640 Solution
+            <Sprout className="h-4 w-4" /> Direct Contract Farming Platform
           </div>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-tight">
