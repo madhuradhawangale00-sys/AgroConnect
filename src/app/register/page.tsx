@@ -150,17 +150,20 @@ export default function Register() {
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="role" className="text-sm text-black font-medium text-black">
+                <label htmlFor="role" className="text-sm text-black font-medium">
                   Role
                 </label>
-                <input
+                <select
                   id="role"
                   name="role"
-                  type="text"
                   required
+                  defaultValue="Farmer"
                   className="w-full p-3 rounded-md border bg-white/50 text-black"
-                  placeholder="Role"
-                />
+                >
+                  <option value="Farmer">Farmer (Sell Produce & Form Contracts)</option>
+                  <option value="Buyer">Buyer (Company / Trader / Procurement Agent)</option>
+                  <option value="Admin">Admin (KYC Review & Platform Oversight)</option>
+                </select>
               </div>
 
               <div className="grid grid-cols-2 gap-4">

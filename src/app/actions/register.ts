@@ -4,13 +4,6 @@ import { connectDB } from "@/lib/mongodb";
 import User from "@/models/User";
 import bcrypt from "bcryptjs";
 
-// const dbName = "main"; // Your database name
-
-// Call connectDB and pass the dbName
-await connectDB();
-
-
-
 export const register = async (values: {
   fullName: string;
   email: string;
@@ -28,10 +21,14 @@ export const register = async (values: {
     await connectDB();
 
     // Check if email already exists
-    const userFound = await User.findOne({ email });
+    const userFound = await User.findOne({ email: email.toLowerCase().trim() });
     if (userFound) {
       return { error: "Email already exists!" };
     }
+
+    // Validate role
+    const validRoles = ["Farmer", "Buyer", "Admin"];
+    const userRole = validRoles.includes(role) ? role : "Farmer";
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -39,14 +36,15 @@ export const register = async (values: {
     // Create and save the user
     const newUser = new User({
       fullName,
-      email,
+      email: email.toLowerCase().trim(),
       phone,
       password: hashedPassword,
       aadhar,
-      role,
+      role: userRole,
       city,
       state,
       pincode,
+      kycStatus: "Not Submitted",
     });
 
     const savedUser = await newUser.save();
@@ -56,15 +54,15 @@ export const register = async (values: {
     delete userObject.password; // Remove sensitive field
     delete userObject.__v; // Remove Mongoose internal field
 
-    return { success: true, user: savedUser.toObject() };
-  } catch (error) {
-    // Log validation errors
-    if (error === "ValidationError") {
-      const errors = Object.values(error).map((err) => err);
+    return { success: true, user: JSON.parse(JSON.stringify(userObject)) };
+  } catch (error: any) {
+    if (error.name === "ValidationError") {
+      const errors = Object.values(error.errors).map((err: any) => err.message);
       return { error: errors.join(", ") };
     }
 
-    console.error(error);
-    return { error: "Registration failed!" };
+    console.error("Registration error:", error);
+    return { error: "Registration failed! Please try again." };
   }
 };
+
