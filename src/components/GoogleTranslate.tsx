@@ -19,8 +19,8 @@ declare global {
 
 const LANGUAGES = [
   { code: "en", label: "English" },
-  { code: "hi", label: "हिन्दी" },
-  { code: "mr", label: "मराठी" },
+  { code: "hi", label: "हिन्दी (Hindi)" },
+  { code: "mr", label: "मराठी (Marathi)" },
 ];
 
 export default function GoogleTranslate() {
@@ -42,29 +42,31 @@ export default function GoogleTranslate() {
     }
 
     // Add Google Translate script if not already added
+    window.googleTranslateElementInit = () => {
+      if (window.google && window.google.translate) {
+        new window.google.translate.TranslateElement(
+          {
+            pageLanguage: "en",
+            includedLanguages: "en,hi,mr",
+            layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: false,
+          },
+          "google_translate_element"
+        );
+      }
+    };
+
     if (!document.getElementById("google-translate-script")) {
       const script = document.createElement("script");
       script.id = "google-translate-script";
-      script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
       script.async = true;
       document.body.appendChild(script);
-
-      window.googleTranslateElementInit = () => {
-        if (window.google && window.google.translate) {
-          new window.google.translate.TranslateElement(
-            {
-              pageLanguage: "en",
-              includedLanguages: "en,hi,mr",
-              layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
-              autoDisplay: false,
-            },
-            "google_translate_element"
-          );
-        }
-      };
+    } else if (window.google && window.google.translate) {
+      window.googleTranslateElementInit();
     }
 
-    // Interval to remove Google Translate iframe banner if dynamically created
+    // Remove Google Translate banner frames and top margin overrides
     const interval = setInterval(() => {
       const banner = document.querySelector(".goog-te-banner-frame") || document.querySelector("iframe[class*='VIpgJd']");
       if (banner) {
@@ -81,12 +83,11 @@ export default function GoogleTranslate() {
   const changeLanguage = (langCode: string) => {
     setCurrentLang(langCode);
 
-    // Set google translate cookie for current domain and root path
-    const domain = window.location.hostname;
-    document.cookie = `googtrans=/en/${langCode}; path=/; domain=${domain}`;
+    // Set googletranslate cookie
     document.cookie = `googtrans=/en/${langCode}; path=/`;
+    document.cookie = `googtrans=/en/${langCode}; path=/; domain=${window.location.hostname}`;
 
-    // Attempt to trigger select element inside google translate container
+    // Trigger select element inside google translate container
     const selectEl = document.querySelector(".goog-te-combo") as HTMLSelectElement | null;
     if (selectEl) {
       selectEl.value = langCode;
@@ -98,15 +99,15 @@ export default function GoogleTranslate() {
 
   return (
     <div className="relative inline-block">
-      {/* Hidden container for Google Translate element */}
-      <div id="google_translate_element" className="hidden" />
+      {/* Offscreen container so Google Translate can instantiate .goog-te-combo */}
+      <div id="google_translate_element" className="absolute top-0 left-0 opacity-0 pointer-events-none w-0 h-0 overflow-hidden" />
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             variant="ghost"
             size="sm"
-            className="text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-700/60"
+            className="text-slate-200 hover:text-white hover:bg-slate-800 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-700/60 font-medium"
           >
             <Languages className="h-4 w-4 text-emerald-400" />
             <span className="text-xs font-semibold">
@@ -114,17 +115,17 @@ export default function GoogleTranslate() {
             </span>
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="bg-slate-900 border-2 border-slate-700 text-slate-100 min-w-[140px] shadow-xl">
+        <DropdownMenuContent align="end" className="bg-slate-900 border-2 border-slate-700 text-slate-100 min-w-[160px] shadow-2xl z-50">
           {LANGUAGES.map((lang) => (
             <DropdownMenuItem
               key={lang.code}
               onClick={() => changeLanguage(lang.code)}
-              className={`hover:bg-slate-800 cursor-pointer font-medium flex items-center justify-between text-xs py-2 ${
-                currentLang === lang.code ? "text-emerald-400 font-bold bg-slate-800/60" : "text-slate-200"
+              className={`hover:bg-slate-800 cursor-pointer font-medium flex items-center justify-between text-xs py-2.5 px-3 ${
+                currentLang === lang.code ? "text-emerald-400 font-extrabold bg-slate-800/80" : "text-slate-200"
               }`}
             >
               <span>{lang.label}</span>
-              {currentLang === lang.code && <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />}
+              {currentLang === lang.code && <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-sm" />}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
