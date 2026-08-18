@@ -172,7 +172,7 @@ export default function Register() {
                       name="aadhar"
                       maxLength={12}
                       required
-                      placeholder="1234 5678 9012"
+                      placeholder="123456789012"
                       className="bg-slate-950/80 border-slate-800 text-white placeholder:text-slate-500 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 rounded-xl h-11"
                     />
                   </div>
