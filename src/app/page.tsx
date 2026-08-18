@@ -9,35 +9,34 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
       <Header />
 
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-20 overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950">
-        <div className="absolute inset-0 bg-[url('/resources/background1.jpeg')] bg-cover bg-center opacity-25" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent" />
+      <section className="relative min-h-[90vh] flex items-center justify-center pt-20 overflow-hidden bg-slate-50 dark:bg-slate-950">
+        <div className="absolute inset-0 bg-[url('/resources/background1.jpeg')] bg-cover bg-center opacity-10 dark:opacity-25" />
 
         <div className="container max-w-5xl mx-auto px-4 relative z-10 text-center space-y-6 py-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-400 text-xs font-semibold uppercase tracking-wider shadow-lg">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-500/40 text-emerald-800 dark:text-emerald-400 text-xs font-bold uppercase tracking-wider shadow-sm">
             <Sprout className="h-4 w-4" /> Direct Contract Farming Platform
           </div>
 
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white leading-tight">
-            Agro<span className="text-emerald-400">Connect</span>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-tight">
+            Agro<span className="text-emerald-600 dark:text-emerald-400">Connect</span>
           </h1>
 
-          <p className="text-lg sm:text-2xl text-slate-300 max-w-3xl mx-auto font-light leading-relaxed">
+          <p className="text-lg sm:text-2xl text-slate-700 dark:text-slate-300 max-w-3xl mx-auto font-medium leading-relaxed">
             A transparent digital contract farming marketplace connecting farmers directly with corporate buyers, replacing informal deals with verified trackable workflows.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
             <Link href="/register">
-              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-8 py-6 text-base rounded-xl shadow-xl shadow-emerald-950 flex items-center gap-2">
+              <Button size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-6 text-base rounded-xl shadow-xl flex items-center gap-2">
                 Get Started <ArrowRight className="h-5 w-5" />
               </Button>
             </Link>
             <Link href="/bdashboard/marketplace">
-              <Button size="lg" variant="outline" className="border-slate-700 text-slate-200 hover:bg-slate-800 hover:text-white px-8 py-6 text-base rounded-xl">
+              <Button size="lg" variant="outline" className="border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 px-8 py-6 text-base rounded-xl font-bold shadow-md">
                 Browse Produce Marketplace
               </Button>
             </Link>
@@ -45,21 +44,21 @@ export default function Home() {
 
           {/* Quick Metrics Bar */}
           <div className="pt-12 grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 backdrop-blur-sm">
-              <p className="text-2xl font-bold text-white">Direct Deals</p>
-              <p className="text-xs text-emerald-400 mt-1 font-medium">Farmer-to-Buyer</p>
+            <div className="p-4 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-md">
+              <p className="text-2xl font-extrabold text-slate-900 dark:text-white">Direct Deals</p>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 font-bold">Farmer-to-Buyer</p>
             </div>
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 backdrop-blur-sm">
-              <p className="text-2xl font-bold text-white">KYC Verified</p>
-              <p className="text-xs text-emerald-400 mt-1 font-medium">Identity & Address</p>
+            <div className="p-4 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-md">
+              <p className="text-2xl font-extrabold text-slate-900 dark:text-white">KYC Verified</p>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 font-bold">Identity & Address</p>
             </div>
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 backdrop-blur-sm">
-              <p className="text-2xl font-bold text-white">Digital Sign</p>
-              <p className="text-xs text-emerald-400 mt-1 font-medium">Auto PDF Contracts</p>
+            <div className="p-4 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-md">
+              <p className="text-2xl font-extrabold text-slate-900 dark:text-white">Digital Sign</p>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 font-bold">Auto PDF Contracts</p>
             </div>
-            <div className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 backdrop-blur-sm">
-              <p className="text-2xl font-bold text-white">Milestones</p>
-              <p className="text-xs text-emerald-400 mt-1 font-medium">Order Tracking</p>
+            <div className="p-4 rounded-xl bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 shadow-md">
+              <p className="text-2xl font-extrabold text-slate-900 dark:text-white">Milestones</p>
+              <p className="text-xs text-emerald-600 dark:text-emerald-400 mt-1 font-bold">Order Tracking</p>
             </div>
           </div>
         </div>

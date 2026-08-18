@@ -33,11 +33,7 @@ html.light body {
   color: #0f172a !important;
 }
 
-html.light .bg-slate-950 {
-  background-color: #f8fafc !important;
-  color: #0f172a !important;
-}
-
+html.light .bg-slate-950,
 html.light .bg-slate-900 {
   background-color: #ffffff !important;
   color: #0f172a !important;
@@ -50,14 +46,26 @@ html.light .bg-slate-800 {
   border-color: #cbd5e1 !important;
 }
 
-html.light .bg-slate-800\/80 {
-  background-color: #f1f5f9 !important;
+html.light .bg-slate-800\/80,
+html.light .bg-slate-900\/80,
+html.light .bg-slate-900\/60,
+html.light .bg-slate-950\/80,
+html.light .bg-slate-950\/60 {
+  background-color: #ffffff !important;
   color: #0f172a !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
 }
 
-html.light .bg-slate-950\/80 {
-  background-color: rgba(255, 255, 255, 0.95) !important;
-  color: #0f172a !important;
+html.light .from-slate-950,
+html.light .via-slate-900,
+html.light .to-slate-950,
+html.light .from-slate-950\/70,
+html.light .via-slate-950\/85 {
+  --tw-gradient-from: #f8fafc var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: #f1f5f9 var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to) !important;
+  background-color: #f8fafc !important;
 }
 
 html.light .text-white {
@@ -75,9 +83,15 @@ html.light .text-slate-500 {
   color: #64748b !important;
 }
 
+html.light .border-slate-700,
+html.light .border-slate-800 {
+  border-color: #cbd5e1 !important;
+}
+
 html.light header {
   background-color: rgba(255, 255, 255, 0.95) !important;
   border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
 }
 
 html.light footer {
